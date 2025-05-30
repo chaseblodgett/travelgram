@@ -1,0 +1,96 @@
+app.get("/api/friends", isAuthenticated, async (req, res) => {
+  const userId = req.session.userId;
+
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const user = await User.findById(userId).populate({
+      path: "friends",
+      populate: {
+        path: "trips",
+        populate: {
+          path: "destinations",
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const mutualFriends = user.friends.filter((friend) => {
+      return friend.friends.includes(userId); 
+    });
+
+    const friends = mutualFriends.map((friend) => ({
+      id: friend._id,
+      name: friend.name,
+      email: friend.email,
+      trips: friend.trips.map((trip) => ({
+        id: trip._id,
+        name: trip.name,
+        startDate: trip.startDate,
+        endDate: trip.endDate,
+        destinations: trip.destinations.map((destination) => ({
+          id: destination._id,
+          name: destination.name,
+          startDate: destination.startDate,
+          endDate: destination.endDate,
+          photos: destination.photos,
+          latitude: destination.latitude,
+          longitude: destination.longitude,
+        })),
+      })),
+    }));
+
+    res.status(200).json({ friends });
+  } catch (error) {
+    console.error("Error fetching friends:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+app.get("/api/search-users", isAuthenticated, async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json({ error: "Search query is required" });
+
+  try {
+    const users = await User.find({ name: { $regex: query, $options: "i" } }).select("id name");
+    res.json({ users });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to search users" });
+  }
+});
+
+app.post("/api/add-friend/:userId", isAuthenticated, async (req, res) => {
+  const { userId } = req.params;
+  const currentUserId = req.session.userId;
+
+  if (!currentUserId) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const currentUser = await User.findById(currentUserId);
+    const targetUser = await User.findById(userId);
+
+    if (!targetUser) {
+      return res.status(404).json({ error: "Target user not found" });
+    }
+
+    if (!currentUser.friends.includes(userId)) {
+      currentUser.friends.push(userId);
+      await currentUser.save();
+    }
+
+    if (!targetUser.friendRequests.includes(currentUserId)) {
+      targetUser.friendRequests.push(currentUserId);
+      await targetUser.save();
+    }
+
+    res.status(200).json({ message: "Friend added and friend request sent" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add friend" });
+  }
+});

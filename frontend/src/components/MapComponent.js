@@ -1,22 +1,167 @@
-// components/MapComponent.js
-import React, { useEffect, useState } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import React, { useEffect, useRef, useState } from "react";
+import { GoogleMap, Marker, InfoWindowF } from "@react-google-maps/api"; // Use InfoWindowF
+import PhotosComponent from "./PhotosComponent";
+import JournalComponent from "./JournalComponent";
 
-const containerStyle = {
-  width: "100%",
-  height: "400px",
-};
+const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onMarkerSelect }) => {
+  const mapRef = useRef(null);
+  const [containerStyle, setContainerStyle] = useState({
+    width: "100%",
+    height: "100%",
+  });
+  const [initialBounds, setInitialBounds] = useState(null);
+  const [photosLoaded, setPhotosLoaded] = useState(false);
 
-const MapComponent = ({ places }) => {
-  const apiKey = process.env.GOOGLE_API_KEY;
+  const onLoad = (map) => {
+    mapRef.current = map;
+
+    map.setOptions({
+      scrollwheel: selectedMarkerZoomState[1],
+      gestureHandling: selectedMarkerZoomState[1] ? "auto" : "none",
+    });
+  };
+
+  useEffect(() => {
+    const updateContainerStyle = () => {
+      const screenWidth = window.innerWidth;
+
+      if (screenWidth < 640) {
+        setContainerStyle({
+          width: "100%",
+          height: "60vh",
+        });
+      } else if (screenWidth < 1024) {
+        setContainerStyle({
+          width: "100%",
+          height: "70vh",
+        });
+      } else {
+        setContainerStyle({
+          width: "100%",
+          height: "100%",
+        });
+      }
+    };
+
+    window.addEventListener("resize", updateContainerStyle);
+    updateContainerStyle();
+
+    return () => {
+      window.removeEventListener("resize", updateContainerStyle);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (markers.length > 0 && mapRef.current) {
+      const bounds = new window.google.maps.LatLngBounds();
+
+      markers.forEach((marker) => {
+        bounds.extend({ lat: marker.lat, lng: marker.lng });
+      });
+
+      const map = mapRef.current;
+      const center = bounds.getCenter();
+      map.panTo({ lat: center.lat(), lng: center.lng() });
+      map.fitBounds(bounds);
+
+      setInitialBounds({
+        center: center,
+        zoom: map.getZoom(),
+      });
+
+      const listener = map.addListener("bounds_changed", () => {
+        let zoom = map.getZoom();
+        if (zoom > 6.5) {
+          map.setZoom(6.5);
+        }
+        if (zoom < 2) {
+          map.setZoom(2);
+        }
+        setInitialBounds({
+          center: center,
+          zoom: map.getZoom(),
+        });
+        window.google.maps.event.removeListener(listener);
+      });
+    } else {
+      if (mapRef.current) {
+        const map = mapRef.current;
+        map.setZoom(2);
+        map.panTo({ lat: 0, lng: 0 });
+      }
+    }
+  }, [markers]);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.setOptions({
+        scrollwheel: selectedMarkerZoomState[1],
+        gestureHandling: selectedMarkerZoomState[1] ? "auto" : "none",
+      });
+      const marker = selectedMarkerZoomState[0];
+      if(marker != null){
+        mapRef.current.panTo({ lat: marker.lat, lng: marker.lng });
+        mapRef.current.setZoom(6);
+      }
+    }
+  }, [selectedMarkerZoomState]);
+
+  const handleMarkerClick = (marker) => {
+    if (!selectedMarkerZoomState[0]) {
+      onMarkerSelect(marker);
+      
+      
+      if (mapRef.current) {
+        const map = mapRef.current;
+        map.panTo({ lat: marker.lat, lng: marker.lng });
+        map.setZoom(6);
+      }
+    }
+  };
+
+  const handleInfoWindowClose = () => {
+    onCloseInfoWindow();
+    if (mapRef.current && initialBounds) {
+      const map = mapRef.current;
+
+      map.setZoom(initialBounds.zoom);
+      map.panTo(initialBounds.center);
+    }
+  };
+
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
-      <GoogleMap mapContainerStyle={containerStyle} center={{ lat: 0, lng: 0 }} zoom={2}>
-        {places.map((place, index) => (
-          <Marker key={index} position={{ lat: place.lat, lng: place.lng }} />
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      defaultCenter={{ lat: 0, lng: 0 }}
+      defaultZoom={2.5}
+      mapTypeId={"hybrid"}
+      onLoad={onLoad}
+    >
+      {markers.length > 0 &&
+        markers.map((marker, index) => (
+          <Marker
+            key={index}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            title={marker.name}
+            onClick={() => handleMarkerClick(marker)}
+          />
         ))}
-      </GoogleMap>
-    </LoadScript>
+
+      {selectedMarkerZoomState[0] && (
+        <InfoWindowF
+          position={{ lat: selectedMarkerZoomState[0].lat, lng: selectedMarkerZoomState[0].lng }}
+          onCloseClick={handleInfoWindowClose}
+        >
+          <div className="w-full max-w-lg sm:max-w-md lg:max-w-3xl p-4 flex flex-col items-center gap-4 text-center rounded-lg shadow-lg bg-white mt-0 pt-0">
+            <h2 className="text-xl lg:text-2xl font-bold text-gray-800">
+              {selectedMarkerZoomState[0].name}
+            </h2>
+            <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
+            <JournalComponent />
+          </div>
+        </InfoWindowF>
+      )}
+    </GoogleMap>
   );
 };
 

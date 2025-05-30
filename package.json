@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
     "start-frontend": "cd frontend && npm start",
-    "start-backend": "cd backend && node server.js"
+    "start-backend": "cd backend && npx nodemon server.js"
   },
   "author": "Chase Blodgett",
   "license": "ISC",

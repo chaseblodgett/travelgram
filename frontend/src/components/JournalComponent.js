@@ -1,24 +1,75 @@
-// components/JournalComponent.js
 import React, { useState } from "react";
 
-const JournalComponent = ({ place }) => {
-  const [journalText, setJournalText] = useState("");
-  const [image, setImage] = useState(null);
+const JournalComponent = () => {
+  const [journalEntries, setJournalEntries] = useState([]);
+  const [newEntry, setNewEntry] = useState("");
 
-  const handleJournalSubmit = () => {
-    // Handle saving the journal entry, e.g., send to backend
+  const handleAddEntry = () => {
+    if (newEntry.trim()) {
+      setJournalEntries((prevEntries) => [...prevEntries, newEntry]);
+      setNewEntry("");
+    }
   };
 
   return (
-    <div>
-      <h2>Write a Journal Entry for {place.name}</h2>
+    <div style={{ width: "100%", textAlign: "center", marginTop: "20px" }}>
+      <h3>Journal / Discussion</h3>
       <textarea
-        value={journalText}
-        onChange={(e) => setJournalText(e.target.value)}
-        placeholder="Write your journal here"
+        value={newEntry}
+        onChange={(e) => setNewEntry(e.target.value)}
+        placeholder="Write your story or comment here..."
+        rows={4}
+        style={{
+          width: "90%",
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+          padding: "10px",
+          marginBottom: "10px",
+        }}
       />
-      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-      <button onClick={handleJournalSubmit}>Save Journal</button>
+      <br />
+      <button
+        onClick={handleAddEntry}
+        style={{
+          padding: "10px 20px",
+          backgroundColor: "#007BFF",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+        }}
+      >
+        Add Entry
+      </button>
+      <div
+        style={{
+          marginTop: "20px",
+          maxHeight: "150px",
+          overflowY: "auto",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          padding: "10px",
+        }}
+      >
+        {journalEntries.length === 0 ? (
+          <p>No entries yet. Be the first to write!</p>
+        ) : (
+          journalEntries.map((entry, index) => (
+            <div
+              key={index}
+              style={{
+                background: "#f9f9f9",
+                margin: "10px 0",
+                padding: "10px",
+                borderRadius: "8px",
+                textAlign: "left",
+              }}
+            >
+              {entry}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };
