@@ -3,7 +3,7 @@ import { GoogleMap, Marker, InfoWindowF } from "@react-google-maps/api"; // Use 
 import PhotosComponent from "./PhotosComponent";
 import JournalComponent from "./JournalComponent";
 
-const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onMarkerSelect }) => {
+const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onMarkerSelect, isFriendMarker }) => {
   const mapRef = useRef(null);
   const [containerStyle, setContainerStyle] = useState({
     width: "100%",
@@ -129,6 +129,11 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
     }
   };
 
+  const formatDate = (date) => {
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    return new Date(date).toLocaleDateString(undefined, options);
+  };
+
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -147,17 +152,36 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
           />
         ))}
 
-      {selectedMarkerZoomState[0] && (
+      {!isFriendMarker && selectedMarkerZoomState[0] && (
         <InfoWindowF
           position={{ lat: selectedMarkerZoomState[0].lat, lng: selectedMarkerZoomState[0].lng }}
           onCloseClick={handleInfoWindowClose}
         >
           <div className="w-full max-w-lg sm:max-w-md lg:max-w-3xl p-4 flex flex-col items-center gap-4 text-center rounded-lg shadow-lg bg-white mt-0 pt-0">
-            <h2 className="text-xl lg:text-2xl font-bold text-gray-800">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-gray-800 mb-0 pt-0">
               {selectedMarkerZoomState[0].name}
             </h2>
+            <h4 className="text-sm lg:text-base text-gray-600 mt-0 mb-0 pt-0 pb-0">
+              {formatDate(selectedMarkerZoomState[0].startDate)} &mdash; {formatDate(selectedMarkerZoomState[0].endDate)}
+            </h4>
             <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
             <JournalComponent />
+          </div>
+        </InfoWindowF>
+      )}
+      {isFriendMarker && selectedMarkerZoomState[0] && (
+        <InfoWindowF
+          position={{ lat: selectedMarkerZoomState[0].lat, lng: selectedMarkerZoomState[0].lng }}
+          onCloseClick={handleInfoWindowClose}
+        >
+          <div className="w-full max-w-lg sm:max-w-md lg:max-w-3xl p-4 flex flex-col items-center gap-4 text-center rounded-lg shadow-lg bg-white mt-0 pt-0">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-gray-800 mb-0 pt-0">
+              {selectedMarkerZoomState[0].name}
+            </h2>
+            <h4 className="text-sm lg:text-base text-gray-600 mt-0 mb-0 pt-0 pb-0">
+              {formatDate(selectedMarkerZoomState[0].startDate)} &mdash; {formatDate(selectedMarkerZoomState[0].endDate)}
+            </h4>
+            <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
           </div>
         </InfoWindowF>
       )}

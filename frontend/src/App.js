@@ -17,6 +17,7 @@ import Messages from "./components/Messages"
 import AddFriends from "./components/AddFriends";
 import AddTrip from "./components/AddTrip";
 import AddDestinationStory from "./components/AddDestinationStory";
+import { isFriday } from "date-fns";
 
 const libraries = ["places"];
 
@@ -26,6 +27,7 @@ const App = () => {
   const [markers, setMarkers] = useState([]);
   const [bucketListItems, setBucketListItems] = useState([]);
   const [selectedMarkerZoomState, setSelectedMarkerZoomState] = useState([null, true]); 
+  const [isFriendMarker, setIsFriendMarker] = useState(false);
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [error, setError] = useState(null);
@@ -38,8 +40,6 @@ const App = () => {
     if (savedUserId) {
       setUserId(savedUserId);
     }
-
-    console.log("API KEY: " + process.env.REACT_APP_GOOGLE_API_KEY)
     
     const fetchTrips = async () => {
       try {
@@ -64,6 +64,7 @@ const App = () => {
 
         if (location.pathname.startsWith("/trips")) {
           setMarkers(allDestinations);
+          setIsFriendMarker(false);
         }
         
       } catch (error) {
@@ -89,6 +90,7 @@ const App = () => {
         
         if (location.pathname.startsWith("/bucketlist")) {
           setMarkers(updatedMarkers);
+          setIsFriendMarker(false);
         }
 
       } catch (error) {
@@ -122,6 +124,7 @@ const App = () => {
         );
         if(location.pathname.startsWith("/friends")){
           setMarkers(friendsDestinations);
+          setIsFriendMarker(true);
         }
         
       } catch (error) {
@@ -280,6 +283,7 @@ const App = () => {
   
     navigate(`/trip/${trip._id}`);
     setMarkers(allDestinations);
+    setIsFriendMarker(false);
   };
 
   const handleRemoveTrip = (trip) => {
@@ -314,7 +318,7 @@ const App = () => {
       }))
     );
     setMarkers(allDestinations);
-  
+    setIsFriendMarker(false);
     navigate("/trips");
   };
   
@@ -332,7 +336,7 @@ const App = () => {
           }))
         );
     setMarkers(allDestinations);
-
+    setIsFriendMarker(false);
   };
 
   const handleBucketListMarkers = () => {
@@ -344,6 +348,7 @@ const App = () => {
     }));
 
     setMarkers(markersData);
+    setIsFriendMarker(false);
   };
 
   const handleFriendRequestMarkers = () => {
@@ -363,6 +368,7 @@ const App = () => {
     );
     handleCloseInfoWindow();
     setMarkers(friendsDestinations);
+    setIsFriendMarker(true);
   }
 
   const handleAddRemoveBucketList = async (bucketListItem) => {
@@ -407,10 +413,11 @@ const App = () => {
       endDate : destination.endDate,
     }
     setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+    setIsFriendMarker(false);
   };
 
   const setFriendMarkers = (friend) => {
-    console.log(friend);
+   
     const friendMarkers = friend.trips.flatMap(trip =>
       trip.destinations.map(destination => ({
         id: destination._id, 
@@ -424,6 +431,7 @@ const App = () => {
       }))
     );
     setMarkers(friendMarkers);
+    setIsFriendMarker(true);
   };
 
 
@@ -486,7 +494,7 @@ const App = () => {
                     onMarkerSelect={handleMarkerSelect}
                     selectedMarkerZoomState={selectedMarkerZoomState}
                     clearMarkers={clearMarkers}
-                    
+                    isFriendMarker={isFriendMarker}
                   />}>
               <Route path="/" 
                 element={<TripListComponent 
@@ -534,7 +542,7 @@ const App = () => {
   );
 };
 
-const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucketListMarkers, onCloseInfoWindow, onMarkerSelect, selectedMarkerZoomState, clearMarkers }) => {
+const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucketListMarkers, onCloseInfoWindow, onMarkerSelect, selectedMarkerZoomState, clearMarkers, isFriendMarker }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -572,6 +580,7 @@ const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucke
             selectedMarkerZoomState={selectedMarkerZoomState} 
             onCloseInfoWindow={onCloseInfoWindow}
             onMarkerSelect={onMarkerSelect}
+            isFriendMarker={isFriendMarker}
             />
           </div>
         </div>

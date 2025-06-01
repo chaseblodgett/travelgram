@@ -48,7 +48,6 @@ const BucketListComponent = ( {handleChange}) => {
         isVisited: false,
       });
       
-      console.log("Newly added bucket list item:", response.data);
       
       setBucketList((prevList) => [
         ...prevList, // Spread the previous list
@@ -99,6 +98,7 @@ const BucketListComponent = ( {handleChange}) => {
       if (!response.ok) {
         throw new Error(data.message || "Error deleting bucket list item");
       }
+
       console.log("Item successfully deleted:", data);
   
     } catch (error) {

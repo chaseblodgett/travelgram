@@ -89,7 +89,7 @@ const LoginPage = ({ onLogin }) => {
             to="/register"
             className="text-blue-500 hover:text-blue-600 font-medium"
           >
-            Register here
+            Sign up
           </Link>
         </p>
       </div>
