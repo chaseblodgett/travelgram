@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const AddFriends = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
+  const [currUserId, setCurrUserId] = useState(null);
+  const [currFriends, setCurrFriends] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch('/api/getUserFriends', {
+          method: 'GET',
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to get user ID');
+        }
+  
+        const data = await response.json(); 
+        setCurrUserId(data.userId); 
+        setCurrFriends(data.friends);
+      } catch (error) {
+        console.error('Error getting current user ID:', error);
+      }
+    };
+  
+    fetchUserInfo();
+  }, []);
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) return;
@@ -13,7 +38,16 @@ const AddFriends = () => {
         throw new Error("Failed to search users");
       }
       const data = await response.json();
-      setResults(data.users);
+      setResults(data.users.filter((elem) =>{
+        let inFriends = false;
+        for(let i = 0; i < currFriends.length; i++){
+          if (currFriends[i].id === elem._id){
+            inFriends = true;
+          }
+        }
+        return elem._id !== currUserId && !inFriends;
+      }));
+      setShowResults(true);
     } catch (error) {
       console.error("Error searching for users:", error);
     }
@@ -52,10 +86,12 @@ const AddFriends = () => {
           Search
         </button>
       </div>
-      <ul className="space-y-4">
+      {showResults && results.length === 0 ? (
+        <p className="text-gray-600">No results, try searching for a different name.</p>
+      ) : (<ul className="space-y-4">
         {results.map((user) => (
           <li
-            key={user.id}
+            key={user._id}
             className="flex items-center justify-between bg-gray-100 p-4 rounded-md shadow"
           >
             <span className="text-lg font-semibold">{user.name}</span>
@@ -67,7 +103,7 @@ const AddFriends = () => {
             </button>
           </li>
         ))}
-      </ul>
+      </ul>)}
     </div>
   );
 };

@@ -1,8 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const AddFriends = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
+  const [currUserId, setCurrUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch('/api/get-userid', {
+          method: 'GET',
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to get user ID');
+        }
+  
+        const data = await response.json(); 
+        setCurrUserId(data.userId); 
+      } catch (error) {
+        console.error('Error getting current user ID:', error);
+      }
+    };
+  
+    fetchUserId();
+  }, []);
+  
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) return;

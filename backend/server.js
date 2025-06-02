@@ -510,6 +510,36 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+app.get("/api/getUserFriends", isAuthenticated, async(req, res) => {
+  const userId = req.session.userId;
+  if (!userId){
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const user = await User.findById(userId).populate({
+      path: "friends"
+    });
+
+    if(!user){
+      return res.status(404).json({ error: "User not found"})
+    }
+
+    const friends = user.friends.map((friend) => ({
+      id: friend._id
+    }));
+
+    return res.status(200).json({ userId, friends });
+
+  }
+  catch{
+    console.error("Error fetching friends and user Id:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+
+
+});
+
 app.get("/api/friends", isAuthenticated, async (req, res) => {
   const userId = req.session.userId;
 
