@@ -9,16 +9,20 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
     width: "100%",
     height: "100%",
   });
+
+
   const [initialBounds, setInitialBounds] = useState(null);
   const [photosLoaded, setPhotosLoaded] = useState(false);
 
   const onLoad = (map) => {
+
     mapRef.current = map;
 
     map.setOptions({
       scrollwheel: selectedMarkerZoomState[1],
       gestureHandling: selectedMarkerZoomState[1] ? "auto" : "none",
     });
+
   };
 
   useEffect(() => {
@@ -154,37 +158,66 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
 
       {!isFriendMarker && selectedMarkerZoomState[0] && (
         <InfoWindowF
-          position={{ lat: selectedMarkerZoomState[0].lat, lng: selectedMarkerZoomState[0].lng }}
+          position={{
+            lat: selectedMarkerZoomState[0].lat,
+            lng: selectedMarkerZoomState[0].lng,
+          }}
           onCloseClick={handleInfoWindowClose}
         >
-          <div className="w-full max-w-lg sm:max-w-md lg:max-w-3xl p-4 flex flex-col items-center gap-4 text-center rounded-lg shadow-lg bg-white mt-0 pt-0">
-            <h2 className="text-2xl lg:text-3xl font-semibold text-gray-800 mb-0 pt-0">
-              {selectedMarkerZoomState[0].name}
-            </h2>
-            <h4 className="text-sm lg:text-base text-gray-600 mt-0 mb-0 pt-0 pb-0">
-              {formatDate(selectedMarkerZoomState[0].startDate)} &mdash; {formatDate(selectedMarkerZoomState[0].endDate)}
-            </h4>
-            <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
-            <JournalComponent />
+          {/* Outer Container to constrain width and prevent overflow */}
+          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden">
+            {/* Inner Content Box */}
+            <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-white">
+              {/* Title */}
+              <h3 className="text-xl lg:text-2xl font-semibold text-gray-800">
+                {selectedMarkerZoomState[0].name}
+              </h3>
+
+              {/* Photos */}
+              <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
+
+              {/* Friend Info */}
+              <JournalComponent/>
+            </div>
           </div>
         </InfoWindowF>
       )}
       {isFriendMarker && selectedMarkerZoomState[0] && (
         <InfoWindowF
-          position={{ lat: selectedMarkerZoomState[0].lat, lng: selectedMarkerZoomState[0].lng }}
+          position={{
+            lat: selectedMarkerZoomState[0].lat,
+            lng: selectedMarkerZoomState[0].lng,
+          }}
           onCloseClick={handleInfoWindowClose}
         >
-          <div className="w-full max-w-lg sm:max-w-md lg:max-w-3xl p-4 flex flex-col items-center gap-4 text-center rounded-lg shadow-lg bg-white mt-0 pt-0">
-            <h2 className="text-2xl lg:text-3xl font-semibold text-gray-800 mb-0 pt-0">
-              {selectedMarkerZoomState[0].name}
-            </h2>
-            <h4 className="text-sm lg:text-base text-gray-600 mt-0 mb-0 pt-0 pb-0">
-              {formatDate(selectedMarkerZoomState[0].startDate)} &mdash; {formatDate(selectedMarkerZoomState[0].endDate)}
-            </h4>
-            <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
+          {/* Outer Container to constrain width and prevent overflow */}
+          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden rounded-lg">
+            {/* Inner Content Box */}
+            <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-white">
+              {/* Title */}
+              <h3 className="text-xl lg:text-2xl font-semibold text-gray-800">
+                {selectedMarkerZoomState[0].name}
+              </h3>
+
+              {/* Photos */}
+              <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
+
+              {/* Friend Info */}
+              <div className="flex items-center gap-3 self-start rounded-lg">
+                <img
+                  src={selectedMarkerZoomState[0].friendPicture}
+                  alt="Friend"
+                  className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  {selectedMarkerZoomState[0].friendName}
+                </span>
+              </div>
+            </div>
           </div>
         </InfoWindowF>
       )}
+
     </GoogleMap>
   );
 };

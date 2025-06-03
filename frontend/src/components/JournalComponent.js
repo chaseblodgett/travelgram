@@ -13,11 +13,11 @@ const JournalComponent = () => {
 
   return (
     <div style={{ width: "100%", textAlign: "center", marginTop: "20px" }}>
-      <h3>Journal / Discussion</h3>
+      <h3>Journal</h3>
       <textarea
         value={newEntry}
         onChange={(e) => setNewEntry(e.target.value)}
-        placeholder="Write your story or comment here..."
+        placeholder="Share a story..."
         rows={4}
         style={{
           width: "90%",
@@ -51,10 +51,8 @@ const JournalComponent = () => {
           padding: "10px",
         }}
       >
-        {journalEntries.length === 0 ? (
-          <p>No entries yet. Be the first to write!</p>
-        ) : (
-          journalEntries.map((entry, index) => (
+        {journalEntries.length !== 0 &&
+          (journalEntries.map((entry, index) => (
             <div
               key={index}
               style={{

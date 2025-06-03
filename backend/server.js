@@ -160,6 +160,14 @@ const conversationSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
+
+// const journalSchema = new mongoose.Schema({
+//   text :{type : String, required: true },
+//   writtenAt: {type: Date, default: Date.now},
+//   destination: {type: mongoose.Schema.Types.ObjectId, ref: "Destination", required: true },
+//   // user: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: True}
+// });
+
 conversationSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   next();
@@ -601,7 +609,7 @@ app.get("/api/search-users", isAuthenticated, async (req, res) => {
   if (!query) return res.status(400).json({ error: "Search query is required" });
 
   try {
-    const users = await User.find({ name: { $regex: query, $options: "i" } }).select("id name");
+    const users = await User.find({ name: { $regex: query, $options: "i" } }).select("id name picture");
     res.json({ users });
   } catch (error) {
     res.status(500).json({ error: "Failed to search users" });

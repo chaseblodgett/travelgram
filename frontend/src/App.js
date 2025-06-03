@@ -118,7 +118,8 @@ const App = () => {
               startDate: destination.startDate,
               endDate: destination.endDate,
               photos: destination.photos,
-              friendName: friend.name 
+              friendName: friend.name,
+              friendPicture: friend.picture
             }))
           )
         );
@@ -362,7 +363,8 @@ const App = () => {
           startDate: destination.startDate,
           endDate: destination.endDate,
           photos: destination.photos,
-          friendName: friend.name 
+          friendName: friend.name,
+          friendPicture: friend.picture
         }))
       )
     );
@@ -427,7 +429,8 @@ const App = () => {
         startDate: destination.startDate,
         endDate: destination.endDate,
         photos: destination.photos,
-        friendName: friend.name 
+        friendName: friend.name,
+        picture: friend.picture 
       }))
     );
     setMarkers(friendMarkers);

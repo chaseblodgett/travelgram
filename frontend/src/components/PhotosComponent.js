@@ -4,6 +4,7 @@ const PhotosComponent = ({ photos }) => {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [maxDimensions, setMaxDimensions] = useState({height : 0, width: 0});
   const imageRefs = useRef([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (!photos || photos.length === 0) return;
@@ -27,6 +28,13 @@ const PhotosComponent = ({ photos }) => {
       const maxHeight = Math.max(...dimensions.map((d) => d.height));
       setMaxDimensions({ width: maxWidth, height: maxHeight });
     });
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 640); // Tailwind's sm breakpoint
+    };
+    handleResize(); // initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [photos]);
   
 
@@ -41,79 +49,94 @@ const PhotosComponent = ({ photos }) => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        maxWidth: "100%",
-        textAlign: "center",
-        margin: "0 auto",
-      }}
-    >
-      {/* Fixed-Size Image Container */}
-      <div
-        className = "bg-white"
-        style={{
-          width: "350px",
-          height: "400px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          border: "0px",
-          overflow: "hidden",
-        }}
-      >
-        <img
-          src={photos[photoIndex]}
-          alt={`photo-${photoIndex}`}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            objectFit: "contain",
-            borderRadius: "8px",
-          }}
-        />
-      </div>
-
-      {/* Navigation Buttons Below */}
-      <div style={{ marginTop: "16px", display: "flex", gap: "12px" }}>
-        <button
-          onClick={handlePrevPhoto}
-          style={{
-            padding: "8px 16px",
-            fontSize: "16px",
-            borderRadius: "8px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            transition: "background-color 0.3s",
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+    
+      <div className="flex flex-col items-center w-full max-w-full text-center mx-auto">
+        {/* Image & Side Buttons Container */}
+        <div
+          className={`relative bg-white flex items-center justify-center ${
+            isMobile
+              ? "w-full max-w-[85vw] h-[250px]"
+              : "w-[300px] sm:w-[350px] h-[350px] sm:h-[400px]"
+          }`}
         >
-          ‹ 
-        </button>
-        <button
-          onClick={handleNextPhoto}
-          style={{
-            padding: "8px 16px",
-            fontSize: "16px",
-            borderRadius: "8px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            transition: "background-color 0.3s",
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
-        > ›
-        </button>
+          {/* Side Buttons for Desktop */}
+          {!isMobile && (
+            <button
+              onClick={handlePrevPhoto}
+              style={{
+                position: "absolute",
+                left: "-50px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                padding: "8px 16px",
+                fontSize: "16px",
+                borderRadius: "8px",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                cursor: "pointer",
+                transition: "background-color 0.3s",
+              }}
+              onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+              onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+            >
+              ‹
+            </button>
+          )}
+    
+          {/* Image */}
+          <img
+            src={photos[photoIndex]}
+            alt={`photo-${photoIndex}`}
+            className="w-full h-full rounded-lg object-contain"
+          />
+    
+          {/* Side Buttons for Desktop */}
+          {!isMobile && (
+            <button
+              onClick={handleNextPhoto}
+              style={{
+                position: "absolute",
+                right: "-50px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                padding: "8px 16px",
+                fontSize: "16px",
+                borderRadius: "8px",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                cursor: "pointer",
+                transition: "background-color 0.3s",
+              }}
+              onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+              onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+            >
+              ›
+            </button>
+          )}
+        </div>
+    
+        {/* Buttons below image on mobile */}
+        {isMobile && (
+          <div className="flex gap-4 mt-4 w-full justify-center">
+            <button
+              onClick={handlePrevPhoto}
+              className="px-4 py-2 text-base rounded-lg bg-blue-600 text-white hover:bg-blue-800 transition"
+            >
+              ‹
+            </button>
+            <button
+              onClick={handleNextPhoto}
+              className="px-4 py-2 text-base rounded-lg bg-blue-600 text-white hover:bg-blue-800 transition"
+            >
+              ›
+            </button>
+          </div>
+        )}
       </div>
-    </div>
-  );
+    );
+    
 };
 
 export default PhotosComponent;

@@ -71,17 +71,17 @@ const AddFriends = () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Add Friends</h1>
-      <div className="mb-4">
+      <div className="mb-4 flex items-center gap-2">
         <input
           type="text"
           placeholder="Search for friends..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 p-2 rounded-md w-full"
+          className="border border-gray-300 p-2 rounded-md flex-grow"
         />
         <button
           onClick={handleSearch}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition mt-2"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
         >
           Search
         </button>
@@ -94,7 +94,16 @@ const AddFriends = () => {
             key={user._id}
             className="flex items-center justify-between bg-gray-100 p-4 rounded-md shadow"
           >
-            <span className="text-lg font-semibold">{user.name}</span>
+            <div className="flex items-center space-x-4">
+                
+                <img
+                  src={user.picture || '/default-avatar.jpg'} 
+                  alt={user.name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                />
+                <span className="text-lg font-semibold">{user.name}</span>
+              </div>
+            
             <button
               onClick={() => handleAddFriend(user._id)}
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
