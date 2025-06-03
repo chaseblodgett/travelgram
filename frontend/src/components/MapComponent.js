@@ -177,7 +177,7 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
               <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
 
               {/* Friend Info */}
-              <JournalComponent/>
+              <JournalComponent destinationId={selectedMarkerZoomState[0].id}/>
             </div>
           </div>
         </InfoWindowF>

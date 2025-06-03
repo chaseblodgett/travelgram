@@ -130,7 +130,6 @@ const destinationSchema = new mongoose.Schema({
     longitude: {type : Number},
     journalEntries: [
       {
-        title: { type: String },
         content: { type: String },
         timestamp: { type: Date, default: Date.now }, 
       },
@@ -340,6 +339,35 @@ app.get("/api/mytrips", async (req, res) => {
   } else {
 
     res.status(401).json({ message: "Unauthorized" });
+  }
+});
+
+app.post("/api/journal", isAuthenticated, async (req, res) =>{
+  const { destinationId, content, date} = req.body;
+  console.log(req.body);
+  const userId = req.session.userId;
+
+  if (!destinationId || !content || !date){
+    return res.status(400).json({error : "All fields are required."} );
+  }
+
+  if(!userId){
+    return res.status(400).json({error : "Unauthorized action."});
+  }
+
+  try {
+
+    console.log(destinationId.destinationId);
+    const destination = await Destination.findById(destinationId.destinationId);
+    destination.journalEntries.content = content;
+    destination.journalEntries.timestamp = date;
+
+    await destination.save();
+    return res.status(201).json({savedItem : destination});
+  }
+  catch (err){
+    console.log(err);
+    return res.status(500).json({error : "Internal service error."})
   }
 });
 

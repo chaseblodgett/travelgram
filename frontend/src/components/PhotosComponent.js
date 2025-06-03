@@ -30,9 +30,9 @@ const PhotosComponent = ({ photos }) => {
     });
 
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 640); // Tailwind's sm breakpoint
+      setIsMobile(window.innerWidth <= 640); 
     };
-    handleResize(); // initial check
+    handleResize(); 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [photos]);

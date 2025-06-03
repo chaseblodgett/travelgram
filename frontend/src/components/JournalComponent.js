@@ -1,14 +1,42 @@
 import React, { useState } from "react";
+// import { Destination } from "../../../backend/server";
 
-const JournalComponent = () => {
+const JournalComponent = (destinationId) => {
   const [journalEntries, setJournalEntries] = useState([]);
   const [newEntry, setNewEntry] = useState("");
 
-  const handleAddEntry = () => {
-    if (newEntry.trim()) {
-      setJournalEntries((prevEntries) => [...prevEntries, newEntry]);
-      setNewEntry("");
+  const handleAddEntry = async () => {
+
+    try{
+      console.log(newEntry);
+      const formData = {
+        destinationId: destinationId,
+        content : newEntry,
+        date: new Date()
+      }
+      
+      console.log(formData);
+      const response = await fetch("/api/journal" ,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to save journal.");
+      }
+      else{
+        setJournalEntries((prevEntries) => [...prevEntries, newEntry]);
+        setNewEntry("");
+      }
     }
+    catch{
+      throw new Error("Failed to save journal.")
+    }
+    
   };
 
   return (
