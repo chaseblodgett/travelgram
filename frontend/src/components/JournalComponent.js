@@ -1,9 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { Destination } from "../../../backend/server";
 
 const JournalComponent = (destinationId) => {
-  const [journalEntries, setJournalEntries] = useState([]);
+  const [journalEntry, setJournalEntry] = useState("");
+  const [journalTimestamp, setJournalTimestamp] = useState(null);
   const [newEntry, setNewEntry] = useState("");
+
+  useEffect(() => {
+    let isCurrent = true; 
+  
+    const fetchJournal = async () => {
+      try {
+        const response = await fetch(`/api/journal?destinationId=${destinationId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+  
+        const data = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(data.message || "Failed to get journal.");
+        }
+  
+        if (isCurrent) {
+          setJournalEntry(data.content);
+          setJournalTimestamp(data.timestamp);
+        }
+      } catch (error) {
+        if (isCurrent) {
+          console.error("Error fetching journal:", error.message);
+        }
+      }
+    };
+  
+    if (destinationId) {
+      fetchJournal();
+    }
+  
+    return () => {
+      isCurrent = false;
+    };
+  }, [destinationId]);
+  
 
   const handleAddEntry = async () => {
 
@@ -29,7 +69,7 @@ const JournalComponent = (destinationId) => {
         throw new Error(data.message || "Failed to save journal.");
       }
       else{
-        setJournalEntries((prevEntries) => [...prevEntries, newEntry]);
+        setJournalEntry(newEntry);
         setNewEntry("");
       }
     }
@@ -42,6 +82,7 @@ const JournalComponent = (destinationId) => {
   return (
     <div style={{ width: "100%", textAlign: "center", marginTop: "20px" }}>
       <h3>Journal</h3>
+
       <textarea
         value={newEntry}
         onChange={(e) => setNewEntry(e.target.value)}
@@ -55,7 +96,9 @@ const JournalComponent = (destinationId) => {
           marginBottom: "10px",
         }}
       />
+
       <br />
+
       <button
         onClick={handleAddEntry}
         style={{
@@ -69,6 +112,7 @@ const JournalComponent = (destinationId) => {
       >
         Add Entry
       </button>
+
       <div
         style={{
           marginTop: "20px",
@@ -79,21 +123,20 @@ const JournalComponent = (destinationId) => {
           padding: "10px",
         }}
       >
-        {journalEntries.length !== 0 &&
-          (journalEntries.map((entry, index) => (
-            <div
-              key={index}
-              style={{
-                background: "#f9f9f9",
-                margin: "10px 0",
-                padding: "10px",
-                borderRadius: "8px",
-                textAlign: "left",
-              }}
-            >
-              {entry}
-            </div>
-          ))
+        {journalEntry ? (
+          <div
+            style={{
+              background: "#f9f9f9",
+              margin: "10px 0",
+              padding: "10px",
+              borderRadius: "8px",
+              textAlign: "left",
+            }}
+          >
+            {journalEntry}
+          </div>
+        ) : (
+          <p style={{ color: "#888" }}>No journal entry yet.</p>
         )}
       </div>
     </div>

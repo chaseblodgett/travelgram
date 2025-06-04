@@ -128,12 +128,10 @@ const destinationSchema = new mongoose.Schema({
     photos: [{ type: String }],
     latitude : {type : Number},
     longitude: {type : Number},
-    journalEntries: [
-      {
-        content: { type: String },
-        timestamp: { type: Date, default: Date.now }, 
-      },
-    ],
+    journalEntry: {
+      content: { type: String },
+      timestamp: { type: Date, default: Date.now },
+    }
   });
   
 const bucketListSchema = new mongoose.Schema({
@@ -158,14 +156,6 @@ const conversationSchema = new mongoose.Schema({
   lastMessage: { type: String }, 
   updatedAt: { type: Date, default: Date.now },
 });
-
-
-// const journalSchema = new mongoose.Schema({
-//   text :{type : String, required: true },
-//   writtenAt: {type: Date, default: Date.now},
-//   destination: {type: mongoose.Schema.Types.ObjectId, ref: "Destination", required: true },
-//   // user: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: True}
-// });
 
 conversationSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
@@ -359,8 +349,8 @@ app.post("/api/journal", isAuthenticated, async (req, res) =>{
 
     console.log(destinationId.destinationId);
     const destination = await Destination.findById(destinationId.destinationId);
-    destination.journalEntries.content = content;
-    destination.journalEntries.timestamp = date;
+    destination.journalEntry.content = content;
+    destination.journalEntry.timestamp = date;
 
     await destination.save();
     return res.status(201).json({savedItem : destination});
@@ -368,6 +358,32 @@ app.post("/api/journal", isAuthenticated, async (req, res) =>{
   catch (err){
     console.log(err);
     return res.status(500).json({error : "Internal service error."})
+  }
+});
+
+app.get("/api/journal", isAuthenticated, async (req, res) =>{
+  const { destinationId } = req.body;
+
+  const userId = req.session.userId;
+
+  if (!userId){
+    return res.status(400).json({ error : "Unauthorized access. "});
+  }
+
+  if (!destination){
+    return res.status(400).json({ error : "Must provide destination ID"});
+  }
+
+  try {
+    const destination = await Destination.findById(destinationId.destinationId);
+    const journalConent = destination.journalEntry.content;
+    const date = destination.journalEntry.timestamp;
+
+    return res.status(200).json({ content : journalConent, timestamp: date});
+  }
+
+  catch{
+    return res.status(500).json( { error : "Internal service error."});
   }
 });
 
