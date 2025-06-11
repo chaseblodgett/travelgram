@@ -52,7 +52,7 @@ const App = () => {
        
         const allDestinations = data.flatMap((trip) =>
           trip.destinations.map((destination) => ({
-            id : trip._id,
+            id : destination._id,
             name: destination.name,
             lat: parseFloat(destination.latitude),
             lng: parseFloat(destination.longitude),
@@ -111,7 +111,7 @@ const App = () => {
         const friendsDestinations = data.friends.flatMap(friend =>
           friend.trips.flatMap(trip =>
             trip.destinations.map(destination => ({
-              id: destination._id, 
+              id: destination.id, 
               name: destination.name,
               lat: parseFloat(destination.latitude),
               lng: parseFloat(destination.longitude),
@@ -191,6 +191,7 @@ const App = () => {
       endDate : destination.endDate,
     }
     setSelectedMarkerZoomState([newMarker, false]);
+    setIsFriendMarker(false);
   };
 
   const acceptFriendRequest = async (userId) => {
@@ -327,7 +328,7 @@ const App = () => {
   const handleChangeMarkers = () => {
     const allDestinations = trips.flatMap((trip) =>
           trip.destinations.map((destination) => ({
-            id : trip._id,
+            id : destination._id,
             name: destination.name,
             lat: parseFloat(destination.latitude),
             lng: parseFloat(destination.longitude),
@@ -356,7 +357,7 @@ const App = () => {
     const friendsDestinations = friends.flatMap(friend =>
       friend.trips.flatMap(trip =>
         trip.destinations.map(destination => ({
-          id: destination._id, 
+          id: destination.id, 
           name: destination.name,
           lat: parseFloat(destination.latitude),
           lng: parseFloat(destination.longitude),
@@ -419,10 +420,9 @@ const App = () => {
   };
 
   const setFriendMarkers = (friend) => {
-   
     const friendMarkers = friend.trips.flatMap(trip =>
       trip.destinations.map(destination => ({
-        id: destination._id, 
+        id: destination.id, 
         name: destination.name,
         lat: parseFloat(destination.latitude),
         lng: parseFloat(destination.longitude),
@@ -515,7 +515,6 @@ const App = () => {
                 clearMarkers={clearMarkers}
                 addMarker={addMarker}
                 showAllTrips={handleAllTrips}/>} />
-              <Route path="/journal" element={<JournalComponent place={{ name: "Sample Place" }} />} />
               <Route path="/bucketlist" element={<BucketListComponent handleChange = {handleAddRemoveBucketList}/>} />
               <Route path="/trip/:id" 
                 element={<TripDetailsComponent 

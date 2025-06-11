@@ -16,7 +16,7 @@ const Sidebar = ({ onCloseInfoWindow }) => {
           onClick={handleNavigation} 
           className="text-lg text-gray-600 hover:text-blue-600 hover:border-b-2 hover:border-blue-600 transition duration-300"
         >
-          My Trips
+          Trips
         </Link>
         <Link
           to="/bucketlist"

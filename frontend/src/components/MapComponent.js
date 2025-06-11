@@ -133,11 +133,6 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
     }
   };
 
-  const formatDate = (date) => {
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(date).toLocaleDateString(undefined, options);
-  };
-
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -177,7 +172,11 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
               <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
 
               {/* Friend Info */}
-              <JournalComponent destinationId={selectedMarkerZoomState[0].id}/>
+              <JournalComponent 
+              destination={selectedMarkerZoomState[0].id} 
+              isFriendJournal={false} 
+              profilePicture={"Default"}
+              profileName={"None"}/>
             </div>
           </div>
         </InfoWindowF>
@@ -201,18 +200,11 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
 
               {/* Photos */}
               <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
-
-              {/* Friend Info */}
-              <div className="flex items-center gap-3 self-start rounded-lg">
-                <img
-                  src={selectedMarkerZoomState[0].friendPicture}
-                  alt="Friend"
-                  className="w-10 h-10 rounded-full object-cover border border-gray-300"
-                />
-                <span className="text-sm font-medium text-gray-700">
-                  {selectedMarkerZoomState[0].friendName}
-                </span>
-              </div>
+              <JournalComponent 
+                destination={selectedMarkerZoomState[0].id} 
+                isFriendJournal={isFriendMarker} 
+                profilePicture={selectedMarkerZoomState[0].friendPicture}
+                profileName={selectedMarkerZoomState[0].friendName}/>
             </div>
           </div>
         </InfoWindowF>

@@ -82,8 +82,6 @@ const defaultProfilePicture = cloudinary.url('profile_pictures/qfw7pzi7ub7h3uhy2
   secure: true,
 });
 
-console.log(defaultProfilePicture)
-
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -334,7 +332,6 @@ app.get("/api/mytrips", async (req, res) => {
 
 app.post("/api/journal", isAuthenticated, async (req, res) =>{
   const { destinationId, content, date} = req.body;
-  console.log(req.body);
   const userId = req.session.userId;
 
   if (!destinationId || !content || !date){
@@ -347,8 +344,7 @@ app.post("/api/journal", isAuthenticated, async (req, res) =>{
 
   try {
 
-    console.log(destinationId.destinationId);
-    const destination = await Destination.findById(destinationId.destinationId);
+    const destination = await Destination.findById(destinationId);
     destination.journalEntry.content = content;
     destination.journalEntry.timestamp = date;
 
@@ -361,29 +357,35 @@ app.post("/api/journal", isAuthenticated, async (req, res) =>{
   }
 });
 
-app.get("/api/journal", isAuthenticated, async (req, res) =>{
-  const { destinationId } = req.body;
-
+app.get("/api/journal/:destinationId", isAuthenticated, async (req, res) =>{
+  const { destinationId } = req.params;
   const userId = req.session.userId;
 
   if (!userId){
     return res.status(400).json({ error : "Unauthorized access. "});
   }
 
-  if (!destination){
+  if (!destinationId){
     return res.status(400).json({ error : "Must provide destination ID"});
   }
 
   try {
-    const destination = await Destination.findById(destinationId.destinationId);
-    const journalConent = destination.journalEntry.content;
-    const date = destination.journalEntry.timestamp;
+    const destination = await Destination.findById(destinationId);
 
-    return res.status(200).json({ content : journalConent, timestamp: date});
+    if (!destination) {
+      return res.status(404).json({ error: "Destination not found." });
+    }
+
+    const journalEntry = destination.journalEntry || {};
+    const journalContent = journalEntry.content || "";
+    const date = journalEntry.timestamp || null;
+
+    return res.status(200).json({ content : journalContent, timestamp: date});
   }
 
-  catch{
-    return res.status(500).json( { error : "Internal service error."});
+  catch (err) {
+    console.error("Error fetching journal entry:", err);
+    return res.status(500).json({ error: "Internal server error." });
   }
 });
 
@@ -499,7 +501,6 @@ app.delete("/api/trips/:id", isAuthenticated, async (req, res) => {
 
 
 app.post('/api/register', upload.single('profilePicture'), async (req, res) => {
-  console.log('Request received at /api/register:', req.body);
 
   const { name, email, password } = req.body;
 
@@ -639,6 +640,7 @@ app.get("/api/friends", isAuthenticated, async (req, res) => {
         })),
       })),
     }));
+
 
     res.status(200).json({ friends });
   } catch (error) {
