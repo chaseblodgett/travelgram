@@ -33,6 +33,8 @@ const App = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [username, setUsername] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
 
 
   useEffect(() => {
@@ -148,11 +150,28 @@ const App = () => {
       }
     }
 
+    const fetchUserDetails = async () =>{
+      try {
+        const response = await fetch("/api/userDetails");
+        if(!response.ok){
+          throw new Error("Failed to fetch user name and picture")
+        }
+
+        const data = await response.json();
+        setUsername(data.username);
+        setProfilePicture(data.profilePicture);
+      }
+      catch (error){
+        console.error("Error fetching user details: ", error);
+      }
+    }
+
     if (savedUserId) {
       fetchTrips();
       fetchBucketList();
       fetchFriends();
       fetchFriendRequests();
+      fetchUserDetails();
     }
   }, [location.pathname]);
 
@@ -274,7 +293,7 @@ const App = () => {
   const handleNewTrip = (trip) => {
    
     const allDestinations = trip.destinations.map((destination) => ({
-      id : trip._id,
+      id : destination._id,
       name: destination.name,
       lat: parseFloat(destination.latitude),
       lng: parseFloat(destination.longitude),
@@ -310,7 +329,7 @@ const App = () => {
   const handleAllTrips = (tripsList = trips) => {
     const allDestinations = tripsList.flatMap((trip) =>
       trip.destinations.map((destination) => ({
-        id : trip._id,
+        id : destination._id,
         name: destination.name,
         lat: parseFloat(destination.latitude),
         lng: parseFloat(destination.longitude),
@@ -498,6 +517,8 @@ const App = () => {
                     selectedMarkerZoomState={selectedMarkerZoomState}
                     clearMarkers={clearMarkers}
                     isFriendMarker={isFriendMarker}
+                    username={username}
+                    profilePicture={profilePicture}
                   />}>
               <Route path="/" 
                 element={<TripListComponent 
@@ -544,7 +565,7 @@ const App = () => {
   );
 };
 
-const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucketListMarkers, onCloseInfoWindow, onMarkerSelect, selectedMarkerZoomState, clearMarkers, isFriendMarker }) => {
+const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucketListMarkers, onCloseInfoWindow, onMarkerSelect, selectedMarkerZoomState, clearMarkers, isFriendMarker, username, profilePicture }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -583,6 +604,8 @@ const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucke
             onCloseInfoWindow={onCloseInfoWindow}
             onMarkerSelect={onMarkerSelect}
             isFriendMarker={isFriendMarker}
+            username={username}
+            profilePicture={profilePicture}
             />
           </div>
         </div>

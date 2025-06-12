@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // import { Destination } from "../../../backend/server";
 
 const JournalComponent = ({destination, isFriendJournal, profilePicture, profileName}) => {
@@ -6,14 +6,15 @@ const JournalComponent = ({destination, isFriendJournal, profilePicture, profile
   const [journalTimestamp, setJournalTimestamp] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const saveClickedRef = useRef(false);
+
 
   useEffect(() => {
     let isCurrent = true; 
 
     const fetchJournal = async () => {
       try {
-        console.log(destination)
-    
+        
         const response = await fetch(`/api/journal/${destination}`, {
           method: "GET",
           headers: {
@@ -48,45 +49,60 @@ const JournalComponent = ({destination, isFriendJournal, profilePicture, profile
   }, [destination]);
 
   const handleEditClick = () =>{
+    console.log("Setting val to true");
     setEditValue(journalEntry);
     setIsEditing(true);
   }
   
   const handleSave = async () => {
-
-    try{
-      
+    console.log("Saving journal with content:", editValue);
+    saveClickedRef.current = true;
+  
+    try {
       const formData = {
-        destinationId: destination.destination,
-        content : editValue,
-        date: new Date()
-      }
-      
-      const response = await fetch("/api/journal" ,{
+        destinationId: destination,
+        content: editValue,
+        date: new Date(),
+      };
+  
+      const response = await fetch("/api/journal", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
-
+  
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Failed to save journal");
-
+  
+      if (!response.ok) {
+        console.error("API error response:", data);
+        throw new Error(data.message || "Failed to save journal");
+      }
+  
       setJournalEntry(editValue);
       setIsEditing(false);
+      console.log("set editing to false 1");
+    } catch (error) {
+      console.error("Failed to save journal:", error.message);
     }
-    catch{
-      throw new Error("Failed to save journal.")
+    finally {
+      setTimeout(() => {
+        saveClickedRef.current = false;
+      }, 150);
     }
-    
   };
+  
 
   const handleBlur = () => {
-    
-    setIsEditing(false);
-    setEditValue(journalEntry);
+    setTimeout(() => {
+      if (saveClickedRef.current) return;
+      console.log("Setting val to false ")
+      setIsEditing(false);
+      setEditValue(journalEntry);
+    }, 300); 
   };
+  
 
   return (
     <div className="w-full text-center mt-8">
@@ -95,29 +111,26 @@ const JournalComponent = ({destination, isFriendJournal, profilePicture, profile
       {/* Journal box */}
       <div className="w-11/12 md:w-3/4 mx-auto border border-gray-700 bg-gray-900 rounded-xl p-4 min-h-[120px] text-left shadow-lg">
   
-      {/* Top row: profile + name + edit button */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <img
             src={profilePicture}
-            alt="Friend"
+            alt="Picture"
             className="w-10 h-10 rounded-full border border-gray-700 shadow-md"
           />
           <span className="text-sm font-medium text-gray-300">{profileName}</span>
         </div>
 
-        {/* Edit/Share icon if not a friend's journal */}
         {!isFriendJournal && (
           <img
             src={isEditing ? "/share_purple.svg" : "/edit_purple.svg"}
             alt={isEditing ? "Save" : "Edit"}
             onClick={isEditing ? handleSave : handleEditClick}
-            className="w-6 h-6 cursor-pointer opacity-80 hover:opacity-100 transition transform hover:scale-110 hover:animate-bounce"
+            className="w-6 h-6 cursor-pointer opacity-80 hover:opacity-100 hover:animate-bounce-once-grow hover:scale-115 transition transform"
           />
         )}
       </div>
 
-      {/* Journal entry or textarea */}
       {isEditing ? (
         <textarea
           value={editValue}

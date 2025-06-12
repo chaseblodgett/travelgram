@@ -15,13 +15,17 @@ module.exports = {
           "0%": { opacity: "0", transform: "scale(0.9)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
+        bounceOnceGrow: {
+          "0%, 100%": { transform: "translateY(0)", animationTimingFunction: "ease-out" },
+          "50%": { transform: "translateY(-10%)", animationTimingFunction: "ease-in" }
+        },
       },
       animation: {
         "fade-in-grow": "fadeInGrow 0.5s ease-out",
         'squeeze-slide-out-right': 'squeezeSlideOutRight 0.5s ease forwards',
+        'bounce-once-grow': 'bounceOnceGrow 0.4s ease-in-out',
       },
     },
   },
   plugins: [],
 };
-

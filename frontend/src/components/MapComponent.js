@@ -3,7 +3,7 @@ import { GoogleMap, Marker, InfoWindowF } from "@react-google-maps/api"; // Use 
 import PhotosComponent from "./PhotosComponent";
 import JournalComponent from "./JournalComponent";
 
-const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onMarkerSelect, isFriendMarker }) => {
+const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onMarkerSelect, isFriendMarker, profilePicture, username }) => {
   const mapRef = useRef(null);
   const [containerStyle, setContainerStyle] = useState({
     width: "100%",
@@ -175,8 +175,8 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
               <JournalComponent 
               destination={selectedMarkerZoomState[0].id} 
               isFriendJournal={false} 
-              profilePicture={"Default"}
-              profileName={"None"}/>
+              profilePicture={profilePicture}
+              profileName={username}/>
             </div>
           </div>
         </InfoWindowF>

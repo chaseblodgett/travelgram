@@ -389,6 +389,30 @@ app.get("/api/journal/:destinationId", isAuthenticated, async (req, res) =>{
   }
 });
 
+app.get("/api/userDetails", isAuthenticated, async (req, res) => {
+  const userId = req.session.userId;
+
+  if (!userId){
+    return res.status(400).json({error : "Unauthorized access"});
+  }
+
+  try {
+    const user = await User.findById(userId);
+
+    if(!user){
+      return res.status(404).json({error : "User not found"});
+    }
+    const username = user.name;
+    const picture = user.picture;
+
+    return res.status(200).json({ username: username, profilePicture: picture});
+
+  }
+  catch{
+    return res.status(500).json({error : "Internal service error"});
+  }
+});
+
 app.post("/api/trips", isAuthenticated, upload.any(), async (req, res) => {
   const { name, startDate, endDate, destinations } = req.body;
   const userId = req.session.userId;
