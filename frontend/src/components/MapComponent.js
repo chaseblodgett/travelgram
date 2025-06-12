@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { GoogleMap, Marker, InfoWindowF } from "@react-google-maps/api"; // Use InfoWindowF
 import PhotosComponent from "./PhotosComponent";
 import JournalComponent from "./JournalComponent";
+import ItineraryComponent from "./ItineraryComponent";
 
-const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onMarkerSelect, isFriendMarker, profilePicture, username }) => {
+const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onMarkerSelect, isFriendMarker, profilePicture, username, isBucketListMarker }) => {
   const mapRef = useRef(null);
   const [containerStyle, setContainerStyle] = useState({
     width: "100%",
@@ -151,7 +152,47 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
           />
         ))}
 
-      {!isFriendMarker && selectedMarkerZoomState[0] && (
+      {!isBucketListMarker && !isFriendMarker && selectedMarkerZoomState[0] && (
+        <InfoWindowF
+          position={{
+            lat: selectedMarkerZoomState[0].lat,
+            lng: selectedMarkerZoomState[0].lng,
+          }}
+          onCloseClick={handleInfoWindowClose}
+          className="bg-gray-900 border border-purple-700 pt-0 mt-0"
+        >
+          
+          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden">
+              <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-gray-900 border border-purple-700">
+                
+              <div className="flex items-start w-full relative">
+              <div className="flex-1 text-center">
+                <h3 className="text-xl lg:text-2xl font-semibold text-gray-200">
+                  {selectedMarkerZoomState[0].name}
+                </h3>
+              </div>
+              <button
+                onClick={handleInfoWindowClose}
+                className="absolute right-0 text-purple-400 hover:text-purple-300 text-xl font-bold px-2"
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+              <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
+
+              <JournalComponent 
+                destination={selectedMarkerZoomState[0].id} 
+                isFriendJournal={false} 
+                profilePicture={profilePicture}
+                profileName={username}
+              />
+            </div>
+          </div>
+
+        </InfoWindowF>
+      )}
+      {!isBucketListMarker && isFriendMarker && selectedMarkerZoomState[0] && (
         <InfoWindowF
           position={{
             lat: selectedMarkerZoomState[0].lat,
@@ -161,42 +202,22 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
         >
           {/* Outer Container to constrain width and prevent overflow */}
           <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden">
-            {/* Inner Content Box */}
-            <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-white">
-              {/* Title */}
-              <h3 className="text-xl lg:text-2xl font-semibold text-gray-800">
-                {selectedMarkerZoomState[0].name}
-              </h3>
-
-              {/* Photos */}
-              <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
-
-              {/* Friend Info */}
-              <JournalComponent 
-              destination={selectedMarkerZoomState[0].id} 
-              isFriendJournal={false} 
-              profilePicture={profilePicture}
-              profileName={username}/>
+            <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-gray-900 border border-purple-700">
+              
+            <div className="flex items-start w-full relative">
+              <div className="flex-1 text-center">
+                <h3 className="text-xl lg:text-2xl font-semibold text-gray-200">
+                  {selectedMarkerZoomState[0].name}
+                </h3>
+              </div>
+              <button
+                onClick={handleInfoWindowClose}
+                className="absolute right-0 text-purple-400 hover:text-purple-300 text-xl font-bold px-2"
+                aria-label="Close"
+              >
+                ×
+              </button>
             </div>
-          </div>
-        </InfoWindowF>
-      )}
-      {isFriendMarker && selectedMarkerZoomState[0] && (
-        <InfoWindowF
-          position={{
-            lat: selectedMarkerZoomState[0].lat,
-            lng: selectedMarkerZoomState[0].lng,
-          }}
-          onCloseClick={handleInfoWindowClose}
-        >
-          {/* Outer Container to constrain width and prevent overflow */}
-          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden rounded-lg">
-            {/* Inner Content Box */}
-            <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-white">
-              {/* Title */}
-              <h3 className="text-xl lg:text-2xl font-semibold text-gray-800">
-                {selectedMarkerZoomState[0].name}
-              </h3>
 
               {/* Photos */}
               <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
@@ -205,6 +226,37 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
                 isFriendJournal={isFriendMarker} 
                 profilePicture={selectedMarkerZoomState[0].friendPicture}
                 profileName={selectedMarkerZoomState[0].friendName}/>
+            </div>
+          </div>
+        </InfoWindowF>
+      )}
+      {isBucketListMarker && selectedMarkerZoomState[0] && (
+        <InfoWindowF
+          position={{
+            lat: selectedMarkerZoomState[0].lat,
+            lng: selectedMarkerZoomState[0].lng,
+          }}
+          onCloseClick={handleInfoWindowClose}
+        >
+          {/* Outer Container to constrain width and prevent overflow */}
+          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden">
+            <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-gray-900 border border-purple-700">
+              
+            <div className="flex items-start w-full relative">
+              <div className="flex-1 text-center">
+                <h3 className="text-xl lg:text-2xl font-semibold text-gray-200">
+                  {selectedMarkerZoomState[0].place}
+                </h3>
+              </div>
+              <button
+                onClick={handleInfoWindowClose}
+                className="absolute right-0 text-purple-400 hover:text-purple-300 text-xl font-bold px-2"
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+              <ItineraryComponent bucketListId={selectedMarkerZoomState[0].id}/>
             </div>
           </div>
         </InfoWindowF>

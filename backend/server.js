@@ -131,13 +131,14 @@ const destinationSchema = new mongoose.Schema({
       timestamp: { type: Date, default: Date.now },
     }
   });
-  
+
 const bucketListSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
     place: { type: String, required: true }, 
     latitude : {type: Number},
     longitude : {type: Number},
     isVisited: { type: Boolean, default: false }, 
+    itinerary: [{type : String}]
   });
 
 const messageSchema = new mongoose.Schema({
@@ -251,7 +252,7 @@ app.post('/api/bucketlist/:id/markVisited', isAuthenticated, async (req, res) =>
 
 app.delete('/api/bucketlist/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
-  const userId = req.session.id;
+  const userId = req.session.userId;
 
   try {
     const deletedItem = await BucketList.findByIdAndDelete(id);
@@ -260,8 +261,9 @@ app.delete('/api/bucketlist/:id', isAuthenticated, async (req, res) => {
       return res.status(404).json({ error: 'Bucket list item not found' });
     }
 
+    console.log(userId);
     const user = await User.findById(userId);
-    user.trips = user.trips.filter((bucketListId) => !bucketListId.equals(id));
+    user.bucketList = user.bucketList.filter((bucketListId) => !bucketListId.equals(id));
     await user.save();
 
     res.status(200).json({ message: 'Bucket list item deleted successfully', item: deletedItem });
@@ -274,6 +276,7 @@ app.delete('/api/bucketlist/:id', isAuthenticated, async (req, res) => {
 app.post("/api/bucketlist", async (req, res) => {
   const { place, latitude, longitude } = req.body;
   const userId = req.session.userId;
+  console.log(req.body);
 
   if (!place || !latitude || !longitude) {
     return res.status(400).json({ error: "All fields are required" });
@@ -412,6 +415,66 @@ app.get("/api/userDetails", isAuthenticated, async (req, res) => {
     return res.status(500).json({error : "Internal service error"});
   }
 });
+
+app.get("/api/itinerary/:id", isAuthenticated, async (req, res) => {
+  const userId = req.session.userId;
+  const bucketListId = req.params.id;
+
+  if(!userId) {
+    return res.status(400).json({error : "Unauthorized Access"});
+  }
+
+  if(!bucketListId){
+    return res.status(400).json({error : "Must provide bucket list ID"});
+  }
+
+  try {
+    const bucketList = await BucketList.findById(bucketListId);
+
+    if(!bucketList){
+      return res.status(400).json({error : "Could not find bucket list"});
+    }
+
+    const itinerary = bucketList.itinerary;
+
+    return res.status(200).json({itinerary : itinerary});
+  }
+  catch{
+    return res.status(500).json({error : "Internal service error."})
+  }
+});
+
+app.post("/api/itinerary", isAuthenticated, async (req, res) => {
+  const userId = req.session.userId;
+
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized access" });
+  }
+
+  const { bucketListId, itinerary } = req.body;
+
+  if (!bucketListId || !Array.isArray(itinerary)) {
+    return res.status(400).json({ error: "Invalid data format" });
+  }
+
+  try {
+    
+    const bucketList = await BucketList.findById(bucketListId);
+
+    if (!bucketList) {
+      return res.status(404).json({ error: "Bucket list not found" });
+    }
+
+    bucketList.itinerary = itinerary;
+    await bucketList.save();
+
+    res.status(200).json({ message: "Itinerary saved successfully" });
+  } catch (error) {
+    console.error("Error saving itinerary:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 app.post("/api/trips", isAuthenticated, upload.any(), async (req, res) => {
   const { name, startDate, endDate, destinations } = req.body;

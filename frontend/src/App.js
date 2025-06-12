@@ -10,7 +10,7 @@ import LoginPage from "./components/LoginPage";
 import SideBar from "./components/SideBar";
 import RegisterPage from "./components/RegisterPage";
 import { useNavigate } from "react-router-dom";
-import { LoadScript } from "@react-google-maps/api";
+import { LoadScript, useJsApiLoader } from "@react-google-maps/api";
 import { useLocation } from "react-router-dom";
 import Friends from "./components/Friends";
 import Messages from "./components/Messages"
@@ -35,6 +35,7 @@ const App = () => {
   const location = useLocation();
   const [username, setUsername] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
+  const [isBucketListMarker, setIsBucketListMarker] = useState(false);
 
 
   useEffect(() => {
@@ -67,6 +68,7 @@ const App = () => {
         if (location.pathname.startsWith("/trips")) {
           setMarkers(allDestinations);
           setIsFriendMarker(false);
+          setIsBucketListMarker(false);
         }
         
       } catch (error) {
@@ -93,6 +95,7 @@ const App = () => {
         if (location.pathname.startsWith("/bucketlist")) {
           setMarkers(updatedMarkers);
           setIsFriendMarker(false);
+          setIsBucketListMarker(true);
         }
 
       } catch (error) {
@@ -128,6 +131,7 @@ const App = () => {
         if(location.pathname.startsWith("/friends")){
           setMarkers(friendsDestinations);
           setIsFriendMarker(true);
+          setIsBucketListMarker(false);
         }
         
       } catch (error) {
@@ -305,6 +309,7 @@ const App = () => {
     navigate(`/trip/${trip._id}`);
     setMarkers(allDestinations);
     setIsFriendMarker(false);
+    setIsBucketListMarker(false);
   };
 
   const handleRemoveTrip = (trip) => {
@@ -340,6 +345,7 @@ const App = () => {
     );
     setMarkers(allDestinations);
     setIsFriendMarker(false);
+    setIsBucketListMarker(false);
     navigate("/trips");
   };
   
@@ -358,6 +364,7 @@ const App = () => {
         );
     setMarkers(allDestinations);
     setIsFriendMarker(false);
+    setIsBucketListMarker(false);
   };
 
   const handleBucketListMarkers = () => {
@@ -370,6 +377,7 @@ const App = () => {
 
     setMarkers(markersData);
     setIsFriendMarker(false);
+    setIsBucketListMarker(true);
   };
 
   const handleFriendRequestMarkers = () => {
@@ -391,6 +399,7 @@ const App = () => {
     handleCloseInfoWindow();
     setMarkers(friendsDestinations);
     setIsFriendMarker(true);
+    setIsBucketListMarker(false);
   }
 
   const handleAddRemoveBucketList = async (bucketListItem) => {
@@ -414,6 +423,8 @@ const App = () => {
       }));
   
       setMarkers(updatedMarkers);
+      setIsBucketListMarker(true);
+      setIsFriendMarker(false);
   
     } catch (error) {
       console.error("Error handling bucket list item:", error);
@@ -435,7 +446,7 @@ const App = () => {
       endDate : destination.endDate,
     }
     setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
-    setIsFriendMarker(false);
+    // setIsFriendMarker(false);
   };
 
   const setFriendMarkers = (friend) => {
@@ -454,6 +465,7 @@ const App = () => {
     );
     setMarkers(friendMarkers);
     setIsFriendMarker(true);
+    setIsBucketListMarker(false);
   };
 
 
@@ -497,10 +509,17 @@ const App = () => {
       console.error("Error saving trip:", err);
     }
   };
+
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    libraries,
+  });
+
+  if (loadError) return <div>Error loading Google Maps</div>;
+  if (!isLoaded) return <div>Loading Google Maps...</div>;
   
   return (
     <div className="h-screen">
-      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY} libraries={libraries}>
         <Routes>
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
           <Route path="/register" element={<RegisterPage onRegister={handleRegister} />} />
@@ -519,6 +538,7 @@ const App = () => {
                     isFriendMarker={isFriendMarker}
                     username={username}
                     profilePicture={profilePicture}
+                    isBucketListMarker={isBucketListMarker}
                   />}>
               <Route path="/" 
                 element={<TripListComponent 
@@ -536,7 +556,7 @@ const App = () => {
                 clearMarkers={clearMarkers}
                 addMarker={addMarker}
                 showAllTrips={handleAllTrips}/>} />
-              <Route path="/bucketlist" element={<BucketListComponent handleChange = {handleAddRemoveBucketList}/>} />
+              <Route path="/bucketlist" element={<BucketListComponent isLoaded={isLoaded} handleChange = {handleAddRemoveBucketList}/>} />
               <Route path="/trip/:id" 
                 element={<TripDetailsComponent 
                 handleAllTrips={ handleAllTrips } 
@@ -555,17 +575,15 @@ const App = () => {
                 onSave={handleSubmitTrip} 
                 addNewMarker={addMarker}
                 clearMarkers={clearMarkers}/>} />
-              
             </Route>
           </Route>
           <Route path="*" element={<h1>404: Page Not Found</h1>} />
         </Routes>
-      </LoadScript>
     </div>
   );
 };
 
-const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucketListMarkers, onCloseInfoWindow, onMarkerSelect, selectedMarkerZoomState, clearMarkers, isFriendMarker, username, profilePicture }) => {
+const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucketListMarkers, onCloseInfoWindow, onMarkerSelect, selectedMarkerZoomState, clearMarkers, isFriendMarker, username, profilePicture, isBucketListMarker }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -606,6 +624,7 @@ const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucke
             isFriendMarker={isFriendMarker}
             username={username}
             profilePicture={profilePicture}
+            isBucketListMarker={isBucketListMarker}
             />
           </div>
         </div>

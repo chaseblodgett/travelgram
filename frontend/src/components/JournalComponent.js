@@ -106,7 +106,7 @@ const JournalComponent = ({destination, isFriendJournal, profilePicture, profile
 
   return (
     <div className="w-full text-center mt-8">
-      <h3 className="text-2xl font-semibold text-white mb-4">Journal</h3>
+      {/* <h3 className="text-2xl font-semibold text-white mb-4">Journal</h3> */}
   
       {/* Journal box */}
       <div className="w-11/12 md:w-3/4 mx-auto border border-gray-700 bg-gray-900 rounded-xl p-4 min-h-[120px] text-left shadow-lg">

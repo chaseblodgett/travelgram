@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import axios from "axios";
 
-const BucketListComponent = ( {handleChange}) => {
+const BucketListComponent = ( {isLoaded, handleChange}) => {
   const [bucketList, setBucketList] = useState([]);
   const [newPlace, setNewPlace] = useState("");
   const [latitude, setLatitude] = useState(null);
@@ -50,7 +50,7 @@ const BucketListComponent = ( {handleChange}) => {
       
       
       setBucketList((prevList) => [
-        ...prevList, // Spread the previous list
+        ...prevList, 
         response.data.data, 
       ]);
       handleChange(response.data.data);
@@ -108,6 +108,7 @@ const BucketListComponent = ( {handleChange}) => {
     }
   };
   
+  if (!isLoaded) return <div>Loading Google Maps...</div>;
 
   return (
     <div className="container mx-auto p-4">

@@ -33,6 +33,27 @@ html, body {
   color: #61dafb;
 }
 
+.gm-style-iw-d::-webkit-scrollbar {
+  width: 8px;
+}
+
+.gm-style-iw-d::-webkit-scrollbar-track {
+  background: #1f2937 !important;
+  border-radius: 4px !important;
+}
+
+.gm-style-iw-d::-webkit-scrollbar-thumb {
+  background-color: #8b5cf6 !important;
+  border-radius: 4px !important;
+  border: 2px solid #1f2937 !important;
+}
+
+.gm-style-iw-d::-webkit-scrollbar-thumb:hover {
+  background-color: #a78bfa !important;
+}
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
