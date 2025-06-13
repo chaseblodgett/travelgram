@@ -65,31 +65,29 @@ const ItineraryComponent = ({ bucketListId }) => {
   };
 
   return (
-    <div className="bg-gray-900 text-white p-6 rounded-xl shadow-lg max-w-xl mx-auto mt-10">
-      <h2 className="text-2xl font-bold text-purple-400 mb-4">Itinerary</h2>
-      
-      <ul className="space-y-2 mb-6">
+    <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-xl max-w-xl mx-auto mt-10 border border-gray-800">
+      <ul className="space-y-3 mb-6">
         {itineraryList.map((item, index) => (
           <li
             key={index}
-            className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-purple-500"
+            className="bg-gray-800 px-4 py-3 rounded-xl border border-purple-600 text-sm sm:text-base shadow-sm"
           >
             {item}
           </li>
         ))}
       </ul>
 
-      <div className="flex gap-2 mb-4">
+      <div className="flex flex-col sm:flex-row gap-3 mb-5">
         <input
           type="text"
           value={newItem}
           onChange={(e) => setNewItem(e.target.value)}
-          className="flex-grow px-4 py-2 rounded-lg bg-gray-700 text-white border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-600"
           placeholder="Add new itinerary item"
+          className="flex-grow px-4 py-2.5 rounded-xl bg-gray-800 text-white placeholder-gray-400 border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-700"
         />
         <button
           onClick={addItineraryItem}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition"
+          className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 rounded-xl font-medium transition"
         >
           Add
         </button>
@@ -97,11 +95,12 @@ const ItineraryComponent = ({ bucketListId }) => {
 
       <button
         onClick={handleSave}
-        className="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 rounded-lg transition"
+        className="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2.5 rounded-xl transition shadow-md"
       >
         Save Itinerary
       </button>
     </div>
+
   );
 };
 

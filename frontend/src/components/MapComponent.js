@@ -139,8 +139,13 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
       mapContainerStyle={containerStyle}
       defaultCenter={{ lat: 0, lng: 0 }}
       defaultZoom={2.5}
-      mapTypeId={"hybrid"}
+      mapTypeId="roadmap"
       onLoad={onLoad}
+      options={{
+        mapId: "b86306ec0d0b517bdb2b3415", 
+        disableDefaultUI: true,
+        zoomControl: true,
+      }}
     >
       {markers.length > 0 &&
         markers.map((marker, index) => (
@@ -148,6 +153,10 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
             key={index}
             position={{ lat: marker.lat, lng: marker.lng }}
             title={marker.name}
+            icon={{
+              url: "pin.svg",
+              scaledSize: new window.google.maps.Size(30, 30)
+            }}
             onClick={() => handleMarkerClick(marker)}
           />
         ))}
