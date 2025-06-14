@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 
 const JournalComponent = ({destination, isFriendJournal, profilePicture, profileName}) => {
   const [journalEntry, setJournalEntry] = useState("");
-  const [journalTimestamp, setJournalTimestamp] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const saveClickedRef = useRef(false);
@@ -30,7 +29,6 @@ const JournalComponent = ({destination, isFriendJournal, profilePicture, profile
   
         if (isCurrent) {
           setJournalEntry(data.content);
-          setJournalTimestamp(data.timestamp);
         }
       } catch (error) {
         if (isCurrent) {
@@ -97,7 +95,6 @@ const JournalComponent = ({destination, isFriendJournal, profilePicture, profile
   const handleBlur = () => {
     setTimeout(() => {
       if (saveClickedRef.current) return;
-      console.log("Setting val to false ")
       setIsEditing(false);
       setEditValue(journalEntry);
     }, 300); 
@@ -109,13 +106,13 @@ const JournalComponent = ({destination, isFriendJournal, profilePicture, profile
       {/* <h3 className="text-2xl font-semibold text-white mb-4">Journal</h3> */}
   
       {/* Journal box */}
-      <div className="w-11/12 md:w-3/4 mx-auto border border-gray-700 bg-gray-900 rounded-xl p-4 min-h-[120px] text-left shadow-lg">
+      <div className="w-full md:w-12/13 lg:w-9/10 mx-auto border border-gray-700 bg-gray-900 rounded-xl p-4 min-h-[120px] text-left shadow-lg">
   
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <img
             src={profilePicture}
-            alt="Picture"
+            alt="Profile"
             className="w-10 h-10 rounded-full border border-gray-700 shadow-md"
           />
           <span className="text-sm font-medium text-gray-300">{profileName}</span>

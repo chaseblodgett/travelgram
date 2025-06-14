@@ -38,7 +38,7 @@ const PhotosComponent = ({ photos }) => {
   }, [photos]);
   
 
-  if (!photos || photos.length === 0) return <p>No photos available</p>;
+  if (!photos || photos.length === 0) return;
 
   const handleNextPhoto = () => {
     setPhotoIndex((prevIndex) => (prevIndex + 1) % photos.length);
@@ -76,14 +76,15 @@ const PhotosComponent = ({ photos }) => {
             )}
 
     
-          {/* Image */}
-          <img
-            src={photos[photoIndex]}
-            alt={`photo-${photoIndex}`}
-            className="w-full h-full rounded-lg object-contain"
-          />
+          <div className="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src={photos[photoIndex]}
+              alt={`photo-${photoIndex}`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+
     
-          {/* Side Buttons for Desktop */}
           {!isMobile && (
               <button
                 onClick={handleNextPhoto}

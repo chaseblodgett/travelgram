@@ -20,16 +20,6 @@ const TopNavigation = ({ handleLogout }) => {
 
         <div className="flex items-center space-x-8">
           
-          <Link
-            to="/About"
-            className="text-lg hover:text-teal-700 transition duration-200"
-          >
-            About
-          </Link>
-
-          <button className="text-lg hover:text-teal-700 transition duration-200">
-            Notifications
-          </button>
 
           <div className="relative">
             <button

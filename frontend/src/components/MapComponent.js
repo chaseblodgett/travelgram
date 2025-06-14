@@ -168,11 +168,11 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
             lng: selectedMarkerZoomState[0].lng,
           }}
           onCloseClick={handleInfoWindowClose}
-          className="bg-gray-900 border border-purple-700 pt-0 mt-0"
+          className="bg-gray-900 border border-purple-500 pt-0 mt-0"
         >
           
           <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden">
-              <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-gray-900 border border-purple-700">
+              <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-gray-900 border border-purple-500">
                 
               <div className="flex items-start w-full relative">
               <div className="flex-1 text-center">
@@ -182,10 +182,10 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
               </div>
               <button
                 onClick={handleInfoWindowClose}
-                className="absolute right-0 text-purple-400 hover:text-purple-300 text-xl font-bold px-2"
+                className="absolute right-0 p-2 bg-gray-800 cursor-pointer opacity-80 hover:opacity-100 hover:animate-bounce-once-grow hover:scale-115 rounded-lg transition px-2"
                 aria-label="Close"
               >
-                ×
+                 <img src="/close_purple.svg" alt="Add" className="w-4 h-4" />
               </button>
             </div>
               <PhotosComponent photos={selectedMarkerZoomState[0].photos} />
