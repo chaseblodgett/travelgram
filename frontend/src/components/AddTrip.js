@@ -61,44 +61,44 @@ const AddTrip = ({ onSave, addNewMarker, clearMarkers }) => {
   }, [clearMarkers, hasClearedMarkers]); // Dependency on hasClearedMarkers
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md max-w-3xl mx-auto text-sm">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Add a New Trip</h2>
+    <div className="p-4 bg-gray-900 text-white rounded-lg shadow-md max-w-3xl mx-auto text-sm">
+      <h2 className="text-xl font-semibold text-purple-400 mb-4">Add a New Trip</h2>
       <form className="space-y-4">
         {/* Trip Name */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Trip Name:</label>
+          <label className="block text-purple-300 font-medium mb-1">Trip Name:</label>
           <input
             type="text"
             value={tripName}
             onChange={(e) => setTripName(e.target.value)}
             placeholder="Enter trip name"
-            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full bg-gray-800 text-white border border-gray-600 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-purple-500 placeholder-gray-400"
           />
         </div>
-
+  
         {/* Trip Dates */}
         <div className="relative">
-          <label className="block text-gray-700 font-medium mb-1">Trip Dates:</label>
+          <label className="block text-purple-300 font-medium mb-1">Trip Dates:</label>
           <div className="flex items-center space-x-2">
             <button
               type="button"
               onClick={() => setShowTripCalendar(!showTripCalendar)}
-              className="flex items-center justify-center w-8 h-8 border border-gray-300 rounded-md hover:bg-gray-100"
+              className="flex items-center justify-center w-8 h-8 border border-gray-600 bg-gray-800 rounded-md hover:bg-gray-700"
             >
-              <img src="/date_range.svg" alt="Select Trip Dates" className="w-4 h-4" />
+              <img src="/date_range.svg" alt="Select Trip Dates" className="w-4 h-4 invert" />
             </button>
             <div className="flex space-x-2">
-              <span className="border px-3 py-1 rounded-md bg-gray-100">
+              <span className="border border-gray-600 px-3 py-1 rounded-md bg-gray-800 text-white">
                 {formatDate(dateRange[0].startDate)}
               </span>
-              <span className="border px-3 py-1 rounded-md bg-gray-100">
+              <span className="border border-gray-600 px-3 py-1 rounded-md bg-gray-800 text-white">
                 {formatDate(dateRange[0].endDate)}
               </span>
             </div>
           </div>
           {showTripCalendar && (
             <div
-              className="absolute z-10 bg-white rounded-lg shadow-md p-2 mt-2"
+              className="absolute z-10 bg-gray-900 text-white rounded-lg shadow-md p-2 mt-2 border border-gray-700"
               onClick={(e) => e.stopPropagation()}
             >
               <DateRange
@@ -106,7 +106,7 @@ const AddTrip = ({ onSave, addNewMarker, clearMarkers }) => {
                 onChange={(item) => setDateRange([item.selection])}
                 moveRangeOnFirstSelection={false}
                 ranges={dateRange}
-                rangeColors={["#2563EB"]}
+                rangeColors={["#8b5cf6"]}
                 className="rounded-md text-xs"
               />
               {/* Button to close calendar */}
@@ -114,7 +114,7 @@ const AddTrip = ({ onSave, addNewMarker, clearMarkers }) => {
                 <button
                   type="button"
                   onClick={() => setShowTripCalendar(false)}
-                  className="flex items-center px-3 py-1 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition duration-200"
+                  className="flex items-center px-3 py-1 bg-purple-600 text-white rounded-md shadow hover:bg-purple-500 transition duration-200"
                 >
                   <img src="/checkmark.svg" alt="Close Calendar" className="w-4 h-4" />
                 </button>
@@ -122,7 +122,7 @@ const AddTrip = ({ onSave, addNewMarker, clearMarkers }) => {
             </div>
           )}
         </div>
-      
+  
         {/* Destinations */}
         <DestinationList
           destinations={destinations}
@@ -133,28 +133,30 @@ const AddTrip = ({ onSave, addNewMarker, clearMarkers }) => {
           tripDateRange={dateRange}
           addMarker={addMarker}
         />
-
+  
         {/* Buttons */}
         <div className="flex justify-end space-x-2">
           <button
             type="button"
             onClick={onCancel}
-            className="bg-gray-500 text-white px-3 py-1 rounded-md shadow hover:bg-gray-400 transition duration-200"
+            className="bg-gray-600 text-white px-3 py-1 rounded-md shadow hover:bg-gray-500 transition duration-200"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleSubmit}
-            className="bg-blue-600 text-white px-3 py-1 rounded-md shadow hover:bg-blue-500 transition duration-200"
+            className="bg-purple-600 text-white px-3 py-1 rounded-md shadow hover:bg-purple-500 transition duration-200"
           >
             Save Trip
           </button>
         </div>
-        {success && <p className="text-black-500 mt-4">Uploading...</p>}
+  
+        {success && <p className="text-purple-300 mt-4">Uploading...</p>}
       </form>
     </div>
   );
+  
 };
 
 export default AddTrip;

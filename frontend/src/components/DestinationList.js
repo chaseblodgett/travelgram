@@ -94,30 +94,29 @@ const DestinationList = ({
             setNewDestination({ ...newDestination, name: e.target.value })
           }
           placeholder="Search for a destination"
-          className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full bg-gray-800 text-white border border-gray-600 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-purple-500 placeholder-gray-400"
         />
       </Autocomplete>
 
       <button
         type="button"
         onClick={handleAddDestination}
-        className="bg-blue-600 text-white px-3 py-1 rounded-md shadow hover:bg-blue-500 transition duration-200 mt-2"
+        className="bg-purple-600 text-white px-3 py-1 rounded-md shadow hover:bg-purple-500 transition duration-200 mt-2"
       >
         Add Destination
       </button>
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-400 mt-2">{error}</p>}
 
-      <ul className="space-y-2 mt-4">
+      <ul className="space-y-3 mt-4">
         {destinations.map((destination, index) => (
-          <li key={index} className="bg-gray-100 p-4 rounded-md shadow">
+          <li key={index} className="bg-gray-800 p-4 rounded-md shadow border border-gray-700">
             <div className="flex justify-between items-center">
               <div>
-                <strong className="text-gray-800">{destination.name}</strong>
+                <strong className="text-white">{destination.name}</strong>
                 <br />
-                <span className="text-gray-600">
-                  {formatDate(destination.startDate)} -{" "}
-                  {formatDate(destination.endDate)}
+                <span className="text-gray-400">
+                  {formatDate(destination.startDate)} – {formatDate(destination.endDate)}
                 </span>
               </div>
               <div className="flex items-center space-x-2 ml-auto">
@@ -130,12 +129,12 @@ const DestinationList = ({
                 />
                 <label
                   htmlFor={`photo-upload-${index}`}
-                  className="cursor-pointer text-blue-600 flex items-center"
+                  className="cursor-pointer text-purple-400 flex items-center"
                 >
                   <img
                     src="/add_photo.svg"
                     alt="Add Photos"
-                    className="w-5 h-5 mr-2"
+                    className="w-5 h-5 mr-2 invert"
                   />
                 </label>
               </div>
@@ -144,19 +143,19 @@ const DestinationList = ({
             {/* Story - Toggle between paragraph and textarea */}
             {editingStoryIndex === index ? (
               <textarea
-                className="w-full mt-2 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-gray-50 shadow-sm text-gray-800 resize-none placeholder-gray-400 hover:border-gray-400 transition duration-200"
+                className="w-full mt-2 bg-gray-900 text-white border border-gray-600 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none placeholder-gray-400"
                 placeholder="Add a story..."
                 value={destination.story}
                 onChange={(e) => handleStoryChange(e, index)}
-                onBlur={() => setEditingStoryIndex(null)} // Switch back to paragraph when blurred
-                autoFocus // Automatically focus when toggling to edit mode
+                onBlur={() => setEditingStoryIndex(null)}
+                autoFocus
               ></textarea>
             ) : (
               <p
-                className={`w-full mt-2 text-gray-700 ${
-                  destination.story ? "cursor-pointer" : "text-gray-400"
+                className={`w-full mt-2 ${
+                  destination.story ? "text-gray-200 cursor-pointer" : "text-gray-500"
                 }`}
-                onClick={() => setEditingStoryIndex(index)} // Switch to textarea when clicked
+                onClick={() => setEditingStoryIndex(index)}
               >
                 {destination.story
                   ? `${destination.story.substring(0, 100)}${destination.story.length > 100 ? "..." : ""}`
@@ -164,14 +163,13 @@ const DestinationList = ({
               </p>
             )}
 
-            {/* Display Photo Previews */}
             <div className="mt-3 flex space-x-2">
               {destination.photos.map((photo, idx) => (
                 <img
                   key={idx}
                   src={URL.createObjectURL(photo)}
                   alt={`destination-photo-${idx}`}
-                  className="w-16 h-16 object-cover rounded-md"
+                  className="w-16 h-16 object-cover rounded-md border border-gray-700"
                 />
               ))}
             </div>
@@ -179,6 +177,7 @@ const DestinationList = ({
         ))}
       </ul>
     </div>
+
   );
 };
 

@@ -17,15 +17,13 @@ const Friends = ({ allFriends, friendRequests, onAcceptRequest, onDeclineRequest
     onDeclineRequest(requestId);
   };
 
-
-
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gray-900 text-white min-h-screen">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">My Friends</h1>
+        <h1 className="text-2xl font-bold text-purple-400">My Friends</h1>
         <Link
           to="/addFriends"
-          className="flex items-center text-white px-2 py-2 rounded-md hover:bg-gray-200 transition pr-0"
+          className="flex items-center bg-transparent p-2 rounded-full cursor-pointer opacity-80 hover:opacity-100 hover:animate-bounce-once-grow hover:scale-115 transition transform"
         >
           <img
             src="/add_friend.svg"
@@ -34,15 +32,15 @@ const Friends = ({ allFriends, friendRequests, onAcceptRequest, onDeclineRequest
           />
         </Link>
       </div>
-
+  
       {friendRequests && friendRequests.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Friend Requests</h2>
+          <h2 className="text-xl font-semibold text-purple-300 mb-2">Friend Requests</h2>
           <ul className="space-y-4">
             {friendRequests.map((request) => (
               <li
                 key={request.id}
-                className="flex items-center justify-between bg-gray-100 p-4 rounded-md shadow"
+                className="flex items-center justify-between bg-gray-800 p-4 rounded-md shadow"
               >
                 <span className="text-lg font-semibold">{request.name}</span>
                 <div>
@@ -64,28 +62,27 @@ const Friends = ({ allFriends, friendRequests, onAcceptRequest, onDeclineRequest
           </ul>
         </div>
       )}
-
+  
       {allFriends.length === 0 ? (
-        <p className="text-gray-600">You have no friends yet. Start by adding some!</p>
+        <p className="text-gray-400">You have no friends yet. Start by adding some!</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-4 rounded-lg" >
           {allFriends.map((friend) => (
             <li
               key={friend.id}
-              className="flex items-center justify-between bg-gray-100 p-4 rounded-md shadow"
+              className="flex items-center justify-between bg-gray-800 p-4 rounded-lg shadow"
             >
               <div className="flex items-center space-x-4">
-                
                 <img
                   src={friend.picture || '/default-avatar.jpg'} 
                   alt={friend.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                  className="w-12 h-12 rounded-full object-cover"
                 />
                 <span className="text-lg font-semibold">{friend.name}</span>
               </div>
               <button
                 onClick={() => handleMessage(friend)}
-                className="flex items-center justify-center bg-white-500 text-white p-2 rounded-full hover:bg-gray-300 transition"
+                className="flex items-center justify-center bg-gray-800 text-white p-2 rounded-full cursor-pointer opacity-80 hover:opacity-100 hover:animate-bounce-once-grow hover:scale-115 transition transform"
               >
                 <img
                   src="/chat.svg"
@@ -99,6 +96,7 @@ const Friends = ({ allFriends, friendRequests, onAcceptRequest, onDeclineRequest
       )}
     </div>
   );
+  
 };
 
 export default Friends;

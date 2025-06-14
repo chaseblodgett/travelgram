@@ -601,36 +601,38 @@ const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucke
   }, [location.pathname]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-gray-900 text-white">
       {/* Top Navigation */}
       <TopNavigation handleLogout={handleLogout} />
-
+  
       <div className="flex flex-grow flex-col lg:flex-row">
         {/* Sidebar */}
-        <div className="lg:w-2/5 w-full bg-gray-100 p-4">
-          <SideBar onCloseInfoWindow={onCloseInfoWindow}/>
+        <div className="lg:w-2/5 w-full bg-gray-900 p-4">
+          <SideBar onCloseInfoWindow={onCloseInfoWindow} />
           <div className="mt-4">
             <Outlet />
           </div>
         </div>
-
-        <div className="lg:w-3/5 w-full h-full lg:h-auto flex-grow">
-          <div className="h-[300px] lg:h-full"> 
+  
+        {/* Map Section */}
+        <div className="lg:w-3/5 w-full h-full lg:h-auto flex-grow bg-gray-900">
+          <div className="h-[300px] lg:h-full bg-gray-900">
             <MapComponent 
-            markers={markers.length > 0 ? markers : []} 
-            selectedMarkerZoomState={selectedMarkerZoomState} 
-            onCloseInfoWindow={onCloseInfoWindow}
-            onMarkerSelect={onMarkerSelect}
-            isFriendMarker={isFriendMarker}
-            username={username}
-            profilePicture={profilePicture}
-            isBucketListMarker={isBucketListMarker}
+              markers={markers.length > 0 ? markers : []} 
+              selectedMarkerZoomState={selectedMarkerZoomState} 
+              onCloseInfoWindow={onCloseInfoWindow}
+              onMarkerSelect={onMarkerSelect}
+              isFriendMarker={isFriendMarker}
+              username={username}
+              profilePicture={profilePicture}
+              isBucketListMarker={isBucketListMarker}
             />
           </div>
         </div>
       </div>
     </div>
   );
+  
 };
 
 

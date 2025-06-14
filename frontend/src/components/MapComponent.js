@@ -9,6 +9,7 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
   const [containerStyle, setContainerStyle] = useState({
     width: "100%",
     height: "100%",
+    backgroundColor: '#1f1f1f'
   });
 
 
@@ -34,16 +35,19 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
         setContainerStyle({
           width: "100%",
           height: "60vh",
+          backgroundColor: '#1f1f1f'
         });
       } else if (screenWidth < 1024) {
         setContainerStyle({
           width: "100%",
           height: "70vh",
+          backgroundColor: '#1f1f1f'
         });
       } else {
         setContainerStyle({
           width: "100%",
           height: "100%",
+          backgroundColor: '#1f1f1f'
         });
       }
     };

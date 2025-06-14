@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; 
 import { io } from "socket.io-client";
 
@@ -12,6 +12,10 @@ const Messages = ({ userId, setAllFriendMarkers }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [conversation, setConversation] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(10);
+  const messagesEndRef = useRef(null);
+  const containerRef = useRef(null);
+
 
   useEffect(() => {
     if (!friend) return;
@@ -22,7 +26,6 @@ const Messages = ({ userId, setAllFriendMarkers }) => {
     const roomId = [friend.id, userId].sort().join("_");
     newSocket.emit("join", roomId);
 
-    // Fetch existing messages
     const fetchMessages = async () => {
       try {
         const response = await fetch(`/api/conversation/${roomId}`);
@@ -54,12 +57,28 @@ const Messages = ({ userId, setAllFriendMarkers }) => {
 
     newSocket.on("receive_message", handleMessageReceive);
 
+    // if (!loading && messages.length > 0) {
+    //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // }
+
     return () => {
       newSocket.emit("leave", roomId); 
       newSocket.off("receive_message", handleMessageReceive); 
       newSocket.disconnect(); 
     };
-  }, [friend, userId]);
+  }, [friend, userId, messages]);
+
+  const handleLoadMore = () => {
+    const container = containerRef.current;
+    const previousScrollHeight = container.scrollHeight;
+  
+    setVisibleCount((prev) => prev + 20);
+  
+    // setTimeout(() => {
+    //   const newScrollHeight = container.scrollHeight;
+    //   container.scrollTop = newScrollHeight - previousScrollHeight;
+    // }, 0);
+  };  
 
 
   const handleSendMessage = () => {
@@ -103,63 +122,82 @@ const Messages = ({ userId, setAllFriendMarkers }) => {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex items-center mb-4">
+    <div className="p-4 bg-gray-900 text-white overflow-y-auto min-h-screen">
+      <div className="flex items-center mb-3">
         {/* Back button */}
         <button
           onClick={handleBack}
-          className="mr-4 px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+          className="mr-3 pl-3 p-2 bg-gray-800 cursor-pointer opacity-70 hover:opacity-100 hover:animate-bounce-once-grow hover:scale-115 rounded-lg transition text-sm"
         >
-          Back
+          <img src="/arrow_back.svg" alt="Add" className="w-5 h-5" />
         </button>
-        <h1 className="text-2xl font-bold">Chat with {friend.name}</h1>
+        <h1 className="text-xl font-semibold text-purple-400">Chat with {friend.name}</h1>
       </div>
-
+  
       {/* Message history */}
-      <div className="bg-gray-100 p-4 rounded-md h-96 overflow-y-auto mb-4">
+      <div
+        className="bg-gray-800 p-3 rounded-md max-h-[500px] overflow-y-auto mb-3 border border-gray-800"
+        ref={containerRef}
+      >
+        {!loading && messages.length > visibleCount && (
+          <div className="text-center mb-2">
+            <button
+              onClick={handleLoadMore}
+              className="text-xs text-purple-400 underline hover:text-purple-300"
+            >
+              Load more messages
+            </button>
+          </div>
+        )}
+
         {loading ? (
-          <p>Loading messages...</p>
+          <p className="text-gray-400">Loading messages...</p>
         ) : error ? (
           <p className="text-red-500">{error}</p>
         ) : (
-          messages.map((message, index) => (
-            <div
-              key={index}
-              className={`mb-2 ${
-                message.sender._id === userId ? "text-right" : "text-left"
-              }`}
-            >
-              <span
-                className={`inline-block px-4 py-2 rounded-md ${
-                  message.sender._id === userId
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-300"
+          messages
+            .slice(-visibleCount)
+            .map((message, index) => (
+              <div
+                key={index}
+                className={`mb-2 ${
+                  message.sender._id === userId ? "text-right" : "text-left"
                 }`}
               >
-                {message.content}
-              </span>
-            </div>
-          ))
+                <span
+                  className={`inline-block px-3 py-1.5 rounded-md text-sm ${
+                    message.sender._id === userId
+                      ? "bg-purple-600 text-white"
+                      : "bg-gray-600 text-gray-200"
+                  }`}
+                >
+                  {message.content}
+                </span>
+              </div>
+            ))
         )}
+        <div ref={messagesEndRef}/>
       </div>
 
+  
       <div className="flex items-center space-x-2">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          className="flex-1 px-4 py-2 border rounded-md"
+          className="flex-1 px-3 py-1.5 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
           placeholder="Type a message..."
         />
         <button
           onClick={handleSendMessage}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          className="px-2 pt-2 py-2 bg-gray-800 cursor-pointer opacity-80 hover:opacity-100 hover:animate-bounce-once-grow hover:scale-115 rounded-lg transition text-sm"
         >
-          Send
+          <img src="/share_purple.svg" alt="Add" className="w-6 h-6" />
         </button>
       </div>
     </div>
   );
+  
 };
 
 export default Messages;

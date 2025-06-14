@@ -68,7 +68,7 @@ const PhotosComponent = ({ photos }) => {
               >
                 <img
                   src="arrow_back.svg"
-                  alt="Back"
+                  alt="<"
                   className="w-5 h-5 transition-transform duration-200 transform hover:scale-110"
                 />
 
@@ -93,7 +93,7 @@ const PhotosComponent = ({ photos }) => {
               >
                 <img
                   src="arrow_forward.svg"
-                  alt="Back"
+                  alt=">"
                   className="w-5 h-5 transition-transform duration-200 transform hover:scale-110"
                 />
 

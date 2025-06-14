@@ -69,52 +69,55 @@ const AddFriends = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Add Friends</h1>
+    <div className="p-6 bg-gray-900 text-white min-h-screen">
+      <h1 className="text-2xl font-bold mb-4 text-purple-400">Add Friends</h1>
+  
       <div className="mb-4 flex items-center gap-2">
         <input
           type="text"
           placeholder="Search for friends..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 p-2 rounded-md flex-grow"
+          className="border border-gray-700 bg-gray-800 text-white p-2 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         <button
           onClick={handleSearch}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+          className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-500 transition"
         >
           Search
         </button>
       </div>
+  
       {showResults && results.length === 0 ? (
-        <p className="text-gray-600">No results, try searching for a different name.</p>
-      ) : (<ul className="space-y-4">
-        {results.map((user) => (
-          <li
-            key={user._id}
-            className="flex items-center justify-between bg-gray-100 p-4 rounded-md shadow"
-          >
-            <div className="flex items-center space-x-4">
-                
+        <p className="text-gray-400">No results, try searching for a different name.</p>
+      ) : (
+        <ul className="space-y-4">
+          {results.map((user) => (
+            <li
+              key={user._id}
+              className="flex items-center justify-between bg-gray-800 p-4 rounded-md shadow"
+            >
+              <div className="flex items-center space-x-4">
                 <img
                   src={user.picture || '/default-avatar.jpg'} 
                   alt={user.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-purple-500"
                 />
-                <span className="text-lg font-semibold">{user.name}</span>
+                <span className="text-lg font-semibold text-white">{user.name}</span>
               </div>
-            
-            <button
-              onClick={() => handleAddFriend(user._id)}
-              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-            >
-              Add
-            </button>
-          </li>
-        ))}
-      </ul>)}
+  
+              <button
+                onClick={() => handleAddFriend(user._id)}
+                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500 transition"
+              >
+                Add
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
-  );
+  );  
 };
 
 export default AddFriends;

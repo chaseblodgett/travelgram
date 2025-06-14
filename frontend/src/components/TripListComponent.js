@@ -78,37 +78,39 @@ const TripListComponent = ({ handleNewTrip, handleRemoveTrip, onCloseInfoWindow,
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gray-900 min-h-screen text-white">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-gray-800">My Trips</h2>
+        <h2 className="text-3xl font-bold text-purple-400">My Trips</h2>
         <button
           onClick={handleClickAdd}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-500 transition duration-200"
+          className="p-2 bg-gray-800 cursor-pointer opacity-80 hover:opacity-100 hover:animate-bounce-once-grow hover:scale-115 rounded-lg transition"
         >
-          <img src="/add.svg" alt="Add Trip" className="w-7 h-5" />
+          <img src="/add_purple.svg" alt="Add Trip" className="w-6 h-6" />
         </button>
       </div>
+  
       <div className="space-y-6">
         {trips.length > 0 ? (
           trips.map((trip) => (
             <div
               key={trip._id}
-              className="block bg-white rounded-lg shadow-lg p-3 hover:shadow-xl transition duration-300 w-full max-w-4xl mx-auto flex justify-between items-center"
+              className="bg-gray-800 rounded-xl shadow-md p-4 hover:opacity-80 hover:animate-bounce-once-grow hover:scale-115 transition duration-300 w-full max-w-4xl mx-auto flex justify-between items-center border border-gray-700"
             >
-              <div onClick={() => handleTripClick(trip)} className="flex-grow cursor-pointer">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <div
+                onClick={() => handleTripClick(trip)}
+                className="flex-grow cursor-pointer"
+              >
+                <h3 className="text-xl font-semibold text-purple-300 mb-1">
                   {trip.name}
                 </h3>
-                <p className="text-gray-600">
-                  <span className="font-small">
-                    {formatDate(trip.startDate)} - {formatDate(trip.endDate)}
-                  </span>
+                <p className="text-gray-400 text-sm">
+                  {formatDate(trip.startDate)} – {formatDate(trip.endDate)}
                 </p>
               </div>
-
-              <div className="relative">
+  
+              <div className="relative ml-4">
                 <button
-                  className="p-2 hover:bg-gray-200 rounded-full"
+                  className="p-2 hover:bg-gray-700 rounded-full transition hover:animate-shake"
                   onClick={(e) => {
                     e.stopPropagation();
                     setDeletePopup(trip._id === deletePopup ? null : trip._id);
@@ -116,23 +118,23 @@ const TripListComponent = ({ handleNewTrip, handleRemoveTrip, onCloseInfoWindow,
                 >
                   <img src="/delete.svg" alt="Delete" className="w-6 h-6" />
                 </button>
-
+  
                 {deletePopup === trip._id && (
                   <div
-                    className="absolute top-10 right-0 bg-white shadow-lg rounded-lg p-4 z-10"
+                    className="absolute top-10 right-0 bg-gray-800 border border-gray-600 shadow-lg rounded-xl p-4 z-10"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <p className="text-gray-800 mb-2">Delete?</p>
+                    <p className="text-white mb-3">Delete this trip?</p>
                     <div className="flex space-x-2">
                       <button
                         onClick={() => handleDelete(trip._id)}
-                        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500"
+                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg transition"
                       >
                         Yes
                       </button>
                       <button
                         onClick={() => setDeletePopup(null)}
-                        className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                        className="bg-gray-600 hover:bg-gray-500 text-white px-4 py-1.5 rounded-lg transition"
                       >
                         No
                       </button>
@@ -143,13 +145,11 @@ const TripListComponent = ({ handleNewTrip, handleRemoveTrip, onCloseInfoWindow,
             </div>
           ))
         ) : (
-          <p className="text-gray-600">
-            No trips available. Click "Add Trip" to create one!
-          </p>
+          <p className="text-gray-400 text-center">No trips available. Click "Add Trip" to create one!</p>
         )}
       </div>
     </div>
   );
-};
+}
 
 export default TripListComponent;

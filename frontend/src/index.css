@@ -60,5 +60,11 @@ code {
   display: none !important;
 }
 
+/* Strong selector to override the map background */
+.gm-style, .gm-style > div {
+  background-color: #111827 !important;
+}
+
+
 
 

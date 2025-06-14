@@ -41,28 +41,43 @@ const TripDetailsComponent = ( {handleAllTrips, onClickBack, onClickDestination}
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gray-900 min-h-screen text-white">
       <button
         onClick={() => handleClickBack()}
-        className="text-blue-600 hover:underline mb-4 flex items-center"
+        className="text-purple-400 hover:underline mb-4 flex items-center"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
         Back to Trips
       </button>
-
-      <h2 className="text-3xl font-bold text-gray-800 mb-4">{trip.name}</h2>
-      <p className="text-lg text-gray-600">
+  
+      <h2 className="text-3xl font-bold text-purple-300 mb-2">{trip.name}</h2>
+      <p className="text-lg text-gray-400">
         {formatDate(trip.startDate)} - {formatDate(trip.endDate)}
       </p>
-
+  
       <div className="mt-6">
         <div className="space-y-4">
           {trip.destinations.map((destination, index) => (
-            <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-md cursor-pointer" onClick={() => handleNewWindow(destination)}>
-              <h4 className="text-lg font-semibold text-gray-800">{destination.name}</h4>
-              <p className="text-gray-600">
+            <div
+              key={index}
+              className="bg-gray-800 hover:bg-gray-700 p-4 rounded-lg shadow-md cursor-pointer border border-gray-700"
+              onClick={() => handleNewWindow(destination)}
+            >
+              <h4 className="text-lg font-semibold text-white">{destination.name}</h4>
+              <p className="text-gray-400">
                 {formatDate(destination.startDate)} - {formatDate(destination.endDate)}
               </p>
             </div>
@@ -71,6 +86,7 @@ const TripDetailsComponent = ( {handleAllTrips, onClickBack, onClickDestination}
       </div>
     </div>
   );
+  
 };
 
 export default TripDetailsComponent;

@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = ({ onCloseInfoWindow }) => {
+  const location = useLocation();
+  const activePath = location.pathname;
 
   const handleNavigation = () => {
     if (onCloseInfoWindow) {
@@ -8,33 +10,29 @@ const Sidebar = ({ onCloseInfoWindow }) => {
     }
   };
 
-  return (
-    <div className="bg-white text-gray-800 w-full lg:w-auto p-6 shadow-md">
-      <div className="flex space-x-8">
-        <Link
-          to="/trips"
-          onClick={handleNavigation} 
-          className="text-lg text-gray-600 hover:text-blue-600 hover:border-b-2 hover:border-blue-600 transition duration-300"
-        >
-          Trips
-        </Link>
-        <Link
-          to="/bucketlist"
-          onClick={handleNavigation} 
-          className="text-lg text-gray-600 hover:text-blue-600 hover:border-b-2 hover:border-blue-600 transition duration-300"
-        >
-          Bucket List
-        </Link>
-        <Link
-          to="/friends"
-          onClick={handleNavigation} 
-          className="text-lg text-gray-600 hover:text-blue-600 hover:border-b-2 hover:border-blue-600 transition duration-300"
-        >
-          Friends
-        </Link>
+  const linkClasses = (path) =>
+    `relative text-lg text-gray-300 hover:text-purple-400 transition duration-300
+    after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] 
+    after:w-0 after:bg-purple-500 hover:after:w-full after:transition-all after:duration-300 ${
+      activePath === path ? 'after:w-full text-purple-400' : ''
+    }`;
+
+
+    return (
+      <div className="bg-gray-900 text-gray-500 w-full lg:w-auto p-6 ">
+        <div className="flex space-x-8 text-gray-500">
+          <Link to="/trips" onClick={handleNavigation} className={linkClasses("/trips")}>
+            Trips
+          </Link>
+          <Link to="/bucketlist" onClick={handleNavigation} className={linkClasses("/bucketlist")}>
+            Bucket List
+          </Link>
+          <Link to="/friends" onClick={handleNavigation} className={linkClasses("/friends")}>
+            Friends
+          </Link>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default Sidebar;

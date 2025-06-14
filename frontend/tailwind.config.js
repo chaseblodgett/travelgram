@@ -19,11 +19,18 @@ module.exports = {
           "0%, 100%": { transform: "translateY(0)", animationTimingFunction: "ease-out" },
           "50%": { transform: "translateY(-10%)", animationTimingFunction: "ease-in" }
         },
+        shake: {
+          '10%, 90%': { transform: 'translateX(-1px)' },
+          '20%, 80%': { transform: 'translateX(2px)' },
+          '30%, 50%, 70%': { transform: 'translateX(-4px)' },
+          '40%, 60%': { transform: 'translateX(4px)' },
+        },
       },
       animation: {
         "fade-in-grow": "fadeInGrow 0.5s ease-out",
         'squeeze-slide-out-right': 'squeezeSlideOutRight 0.5s ease forwards',
         'bounce-once-grow': 'bounceOnceGrow 0.4s ease-in-out',
+         'shake': 'shake 0.5s ease-in-out',
       },
     },
   },
