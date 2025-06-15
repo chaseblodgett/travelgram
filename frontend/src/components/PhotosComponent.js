@@ -67,7 +67,7 @@ const PhotosComponent = ({ photos }) => {
                 aria-label="Previous Photo"
               >
                 <img
-                  src="arrow_back.svg"
+                  src="/arrow_back.svg"
                   alt="<"
                   className="w-5 h-5 transition-transform duration-200 transform hover:scale-110"
                 />
@@ -92,7 +92,7 @@ const PhotosComponent = ({ photos }) => {
                 aria-label="Previous Photo"
               >
                 <img
-                  src="arrow_forward.svg"
+                  src="/arrow_forward.svg"
                   alt=">"
                   className="w-5 h-5 transition-transform duration-200 transform hover:scale-110"
                 />
@@ -109,7 +109,7 @@ const PhotosComponent = ({ photos }) => {
               className="px-4 py-2 text-base rounded-lg bg-blue-600 text-white hover:bg-blue-800 transition"
             >
               <img
-                  src="arrow_back.svg"
+                  src="/arrow_back.svg"
                   alt="Back"
                   className="w-5 h-5 transition-transform duration-200 transform hover:scale-110"
                 />
@@ -119,7 +119,7 @@ const PhotosComponent = ({ photos }) => {
               className="px-4 py-2 text-base rounded-lg bg-blue-600 text-white hover:bg-blue-800 transition"
             >
               <img
-                  src="arrow_forward.svg"
+                  src="/arrow_forward.svg"
                   alt="Back"
                   className="w-5 h-5 transition-transform duration-200 transform hover:scale-110"
                 />

@@ -111,11 +111,11 @@ const BucketListComponent = ( {isLoaded, handleChange}) => {
   if (!isLoaded) return <div>Loading Google Maps...</div>;
 
   return (
-    <div className="container mx-auto p-4 bg-gray-900 min-h-screen text-white">
-      <h2 className="text-2xl font-semibold text-left mb-4 px-2 text-purple-400">My Bucket List</h2>
+    <div className="container mx-auto p-3 bg-gray-900 min-h-screen text-white">
+      <h2 className="text-2xl font-semibold text-left mb-3 px-2 text-purple-400">My Bucket List</h2>
   
       {/* Autocomplete and Button */}
-      <div className="flex items-center mb-6 space-x-4">
+      <div className="flex items-center mb-5 space-x-3">
         <div className="flex-1">
           <Autocomplete
             onLoad={(ref) => setAutocomplete(ref)}
@@ -126,27 +126,27 @@ const BucketListComponent = ( {isLoaded, handleChange}) => {
               placeholder="Search for a place"
               value={newPlace}
               onChange={(e) => setNewPlace(e.target.value)}
-              className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-1.5 bg-gray-800 text-white border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-500 text-sm"
             />
           </Autocomplete>
         </div>
   
-        <button onClick={handleAddPlace} className="p-3 transition duration-200 hover:scale-110">
+        <button onClick={handleAddPlace} className="p-2 transition duration-200 hover:scale-105">
           <img
             src="/add_box_light.svg"
             alt="Add to Bucket List"
-            className="w-6 h-6"
+            className="w-5 h-5"
           />
         </button>
       </div>
   
       {bucketList.length > 0 && (
-        <div className="mt-8">
-          <ul className="space-y-4">
+        <div className="mt-6">
+          <ul className="space-y-3">
             {bucketList.map((item) => (
               <li
                 key={item._id}
-                className={`flex items-center justify-between p-4 border border-gray-700 bg-gray-800 rounded-lg shadow-sm ${
+                className={`flex items-center justify-between p-3 border border-gray-700 bg-gray-800 rounded-md shadow-sm ${
                   removingItem === item._id
                     ? "animate-squeeze-slide-out-right"
                     : newlyAddedItem === item._id
@@ -161,13 +161,13 @@ const BucketListComponent = ( {isLoaded, handleChange}) => {
                 }}
               >
                 <div className="flex-1">
-                  <h3 className="font-medium text-lg text-purple-300">{item.place}</h3>
-                  <p className="text-sm text-gray-400">{item.description || ""}</p>
+                  <h3 className="font-medium text-base text-purple-300">{item.place}</h3>
+                  <p className="text-xs text-gray-400">{item.description || ""}</p>
                 </div>
   
                 <button
                   onClick={() => markAsVisited(item._id)}
-                  className="transition-transform duration-500 transform hover:scale-110"
+                  className="transition-transform duration-500 transform hover:scale-105 ml-3"
                 >
                   <img
                     src={
@@ -176,7 +176,7 @@ const BucketListComponent = ( {isLoaded, handleChange}) => {
                         : "/checkbox.svg"
                     }
                     alt="Checkbox"
-                    className={`w-6 h-6 ${
+                    className={`w-5 h-5 ${
                       removingItem === item._id ? "rotate-360" : ""
                     }`}
                   />
@@ -189,12 +189,13 @@ const BucketListComponent = ( {isLoaded, handleChange}) => {
   
       {/* If the bucket list is empty */}
       {bucketList.length === 0 && (
-        <p className="text-center text-gray-400 mt-4">
+        <p className="text-center text-gray-400 mt-4 text-sm">
           Your bucket list is empty. Start adding places!
         </p>
       )}
     </div>
   );
+  
 }  
 
 export default BucketListComponent;

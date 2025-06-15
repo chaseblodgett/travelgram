@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const TopNavigation = ({ handleLogout }) => {
+const TopNavigation = ({ handleLogout, profilePicture }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const toggleProfileMenu = () => {
@@ -9,24 +9,29 @@ const TopNavigation = ({ handleLogout }) => {
   };
 
   return (
-    <nav className="bg-white text-gray-800 shadow-md">
-      <div className="flex justify-between items-center px-6 py-4 max-w-screen-xl mx-auto">
-   
-        <div className="text-2xl font-bold tracking-wide text-teal-600">
-          <Link to="/" className="hover:text-teal-700 transition duration-200">
-            Track My Travel
-          </Link>
-        </div>
-
-        <div className="flex items-center space-x-8">
+    <nav className="bg-gray-900 text-white shadow-md">
+        <div className="flex justify-between items-center py-4 mx-auto px-6">
           
-
+          {/* Left: Logo */}
+          <Link
+            to="/home"
+            className="flex items-center px-4 space-x-1 text-2xl font-bold tracking-wide text-purple-400 hover:text-purple-300 transition duration-200"
+          >
+            <img src="/travel_logo.svg" alt="Travel Logo" className="h-8 w-8" />
+            <span>Travelgram</span>
+          </Link>
+    
+          {/* Right: Profile Picture */}
           <div className="relative">
             <button
               onClick={toggleProfileMenu}
-              className="flex items-center space-x-2 text-lg hover:text-teal-700 transition duration-200"
+              className="flex items-center space-x-2 text-lg hover:text-purple-300 transition duration-200"
             >
-              <span>Profile</span>
+              <img
+                src={profilePicture}
+                alt="Profile"
+                className="w-10 h-10 rounded-full border border-gray-700 shadow-md"
+              />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -40,19 +45,13 @@ const TopNavigation = ({ handleLogout }) => {
                 />
               </svg>
             </button>
-
+    
             {/* Dropdown Menu */}
             {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg z-10 border border-gray-200">
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 hover:bg-teal-50"
-                >
-                  View Profile
-                </Link>
+              <div className="absolute right-0 mt-2 w-48 bg-gray-800 text-white rounded-lg shadow-lg z-10 border border-gray-700">
                 <button
                   onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 hover:bg-teal-50"
+                  className="block w-full text-left px-4 py-2 hover:bg-purple-600 hover:text-white transition"
                 >
                   Logout
                 </button>
@@ -60,9 +59,10 @@ const TopNavigation = ({ handleLogout }) => {
             )}
           </div>
         </div>
-      </div>
     </nav>
   );
+  
+  
 };
 
 export default TopNavigation;

@@ -32,15 +32,16 @@ const LoginPage = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
-          Login
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-950 to-black px-4">
+      <div className="w-full max-w-md bg-gray-900 rounded-2xl shadow-xl p-8 animate-fade-in-up border border-gray-800">
+        <h2 className="text-3xl font-bold text-purple-400 text-center mb-8">
+          Welcome Back
         </h2>
-        <form onSubmit={handleLogin} className="space-y-4">
+
+        <form onSubmit={handleLogin} className="space-y-6">
           {/* Email Input */}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <div className="flex flex-col">
+            <label htmlFor="email" className="text-sm text-purple-300 mb-1">
               Email
             </label>
             <input
@@ -49,13 +50,13 @@ const LoginPage = ({ onLogin }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+              className="bg-gray-800 text-white border border-gray-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
             />
           </div>
 
           {/* Password Input */}
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <div className="flex flex-col">
+            <label htmlFor="password" className="text-sm text-purple-300 mb-1">
               Password
             </label>
             <input
@@ -64,35 +65,49 @@ const LoginPage = ({ onLogin }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+              className="bg-gray-800 text-white border border-gray-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
             />
           </div>
 
           {/* Submit Button */}
-          <div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-md transition"
-            >
-              Login
-            </button>
-          </div>
-
-          {/* Error Message */}
-          {error && <p className="mt-4 text-red-600 text-center">{error}</p>}
+          <button
+            type="submit"
+            className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl transition transform hover:scale-105 shadow-md"
+          >
+            Login
+          </button>
         </form>
 
+        {/* Error Placeholder */}
+        {/* <p className="text-red-500 text-center mt-4">Invalid login details.</p> */}
+
         {/* Register Link */}
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            className="text-blue-500 hover:text-blue-600 font-medium"
-          >
+        <p className="mt-6 text-sm text-gray-400 text-center">
+          Don&apos;t have an account?{" "}
+          <Link to="/register" className="text-purple-400 hover:text-purple-300 transition">
             Sign up
           </Link>
         </p>
       </div>
+
+      {/* Animations */}
+      <style>
+        {`
+          @keyframes fadeInUp {
+            0% {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out both;
+          }
+        `}
+      </style>
     </div>
   );
 };

@@ -161,7 +161,6 @@ conversationSchema.pre("save", function (next) {
   next();
 });
 
-  
 const User = mongoose.model('User', userSchema);
 const Trip = mongoose.model('Trip', tripSchema);
 const Destination = mongoose.model('Destination', destinationSchema);
@@ -175,6 +174,7 @@ const isAuthenticated = (req, res, next) => {
   if (req.session.userId) {
     return next();
   } else {
+    console.log("returning unauthorized")
     return res.status(401).json({ message: "Unauthorized" });
   }
 };
@@ -520,7 +520,10 @@ app.post("/api/trips", isAuthenticated, upload.any(), async (req, res) => {
               })
             )
           : [];
-
+        
+        const newJournal = {content : destination.story, timestamp: new Date()};
+        console.log(newJournal);
+    
         const destinationDoc = new Destination({
           trip: trip._id,
           name: destination.name,
@@ -528,6 +531,7 @@ app.post("/api/trips", isAuthenticated, upload.any(), async (req, res) => {
           endDate: destination.endDate,
           latitude: lat,
           longitude: lng,
+          journalEntry: newJournal,
           photos,
         });
         return destinationDoc.save();
@@ -615,6 +619,7 @@ app.post('/api/register', upload.single('profilePicture'), async (req, res) => {
     });
 
     req.session.id = user._id;
+    req.session.userId = user._id;
     await user.save();
 
     res.status(201).json({
@@ -938,11 +943,9 @@ app.get("/api/conversation/:roomId", isAuthenticated, async (req, res) => {
 
 
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
 
   socket.on("join", (roomId) => {
     socket.join(roomId);
-    console.log(`User joined room: ${roomId}`);
   });
 
   socket.on("send_message", async (message) => {
@@ -984,7 +987,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
+    
   });
 });
 

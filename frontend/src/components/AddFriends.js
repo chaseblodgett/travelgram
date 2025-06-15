@@ -69,8 +69,8 @@ const AddFriends = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-900 text-white min-h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-purple-400">Add Friends</h1>
+    <div className="p-4 bg-gray-900 text-white min-h-screen">
+      <h1 className="text-xl font-semibold mb-3 text-purple-400">Add Friends</h1>
   
       <div className="mb-4 flex items-center gap-2">
         <input
@@ -78,37 +78,37 @@ const AddFriends = () => {
           placeholder="Search for friends..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-700 bg-gray-800 text-white p-2 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="border border-gray-700 bg-gray-800 text-sm text-white px-2 py-1.5 rounded-md flex-grow focus:outline-none focus:ring-1 focus:ring-purple-500"
         />
         <button
           onClick={handleSearch}
-          className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-500 transition"
+          className="bg-purple-600 text-sm text-white px-3 py-1.5 rounded-md hover:bg-purple-500 transition"
         >
           Search
         </button>
       </div>
   
       {showResults && results.length === 0 ? (
-        <p className="text-gray-400">No results, try searching for a different name.</p>
+        <p className="text-gray-400 text-sm">No results, try searching for a different name.</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-3">
           {results.map((user) => (
             <li
               key={user._id}
-              className="flex items-center justify-between bg-gray-800 p-4 rounded-md shadow"
+              className="flex items-center justify-between bg-gray-800 px-3 py-2 rounded-md shadow-sm"
             >
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <img
-                  src={user.picture || '/default-avatar.jpg'} 
+                  src={user.picture || '/default-avatar.jpg'}
                   alt={user.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-purple-500"
+                  className="w-10 h-10 rounded-full object-cover border border-purple-500"
                 />
-                <span className="text-lg font-semibold text-white">{user.name}</span>
+                <span className="text-sm font-medium">{user.name}</span>
               </div>
   
               <button
                 onClick={() => handleAddFriend(user._id)}
-                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500 transition"
+                className="bg-green-600 text-sm text-white px-3 py-1.5 rounded-md hover:bg-green-500 transition"
               >
                 Add
               </button>
@@ -117,7 +117,8 @@ const AddFriends = () => {
         </ul>
       )}
     </div>
-  );  
+  );
+  
 };
 
 export default AddFriends;

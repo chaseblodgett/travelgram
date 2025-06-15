@@ -24,6 +24,7 @@ const AddTrip = ({ onSave, addNewMarker, clearMarkers }) => {
     latitude: null,
     longitude: null,
     photos: [],
+    story: ""
   });
   const [success, setSuccess] = useState(false);
   const [hasClearedMarkers, setHasClearedMarkers] = useState(false); // Track if markers have been cleared

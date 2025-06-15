@@ -43,15 +43,16 @@ const RegisterPage = ({ onRegister }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
-          Register
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-950 to-black px-4">
+      <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-2xl shadow-xl p-8 animate-fade-in-up">
+        <h2 className="text-3xl font-bold text-purple-400 text-center mb-8">
+          Create Account
         </h2>
-        <form onSubmit={handleRegister} className="space-y-4">
-          {/* Name Input */}
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+
+        <form onSubmit={handleRegister} className="space-y-6">
+
+          <div className="flex flex-col">
+            <label htmlFor="name" className="text-sm text-purple-300 mb-1">
               Name
             </label>
             <input
@@ -60,13 +61,12 @@ const RegisterPage = ({ onRegister }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+              className="bg-gray-800 text-white border border-gray-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
             />
           </div>
 
-          {/* Email Input */}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <div className="flex flex-col">
+            <label htmlFor="email" className="text-sm text-purple-300 mb-1">
               Email
             </label>
             <input
@@ -75,13 +75,12 @@ const RegisterPage = ({ onRegister }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+              className="bg-gray-800 text-white border border-gray-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
             />
           </div>
 
-          {/* Password Input */}
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <div className="flex flex-col">
+            <label htmlFor="password" className="text-sm text-purple-300 mb-1">
               Password
             </label>
             <input
@@ -90,13 +89,13 @@ const RegisterPage = ({ onRegister }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+              className="bg-gray-800 text-white border border-gray-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
             />
           </div>
 
           {/* Profile Picture Upload */}
-          <div>
-            <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700">
+          <div className="flex flex-col">
+            <label htmlFor="profilePicture" className="text-sm text-purple-300 mb-1">
               Profile Picture
             </label>
             <input
@@ -104,27 +103,42 @@ const RegisterPage = ({ onRegister }) => {
               id="profilePicture"
               accept="image/*"
               onChange={handleProfilePictureChange}
-              className="mt-1 block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-gray-300 file:text-sm file:font-medium file:bg-gray-100 hover:file:bg-gray-200"
+              className="file:bg-purple-600 file:text-white file:rounded-lg file:px-4 file:py-2 file:border-0 file:cursor-pointer text-sm text-gray-300 hover:file:bg-purple-500 transition"
             />
           </div>
 
-          {/* Submit Button */}
-          <div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-md transition"
-            >
-              Register
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl transition transform hover:scale-105 shadow-md"
+          >
+            Register
+          </button>
+        </form>
 
-          {/* Success/Error Messages */}
-          {success && (
+        {success && (
             <p className="mt-4 text-green-600 text-center">Registration successful!</p>
           )}
           {error && <p className="mt-4 text-red-600 text-center">{error}</p>}
-        </form>
       </div>
+
+      {/* Animations */}
+      <style>
+        {`
+          @keyframes fadeInUp {
+            0% {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out both;
+          }
+        `}
+      </style>
     </div>
   );
 };

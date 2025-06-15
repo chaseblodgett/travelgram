@@ -16,6 +16,7 @@ import Friends from "./components/Friends";
 import Messages from "./components/Messages"
 import AddFriends from "./components/AddFriends";
 import AddTrip from "./components/AddTrip";
+import HomePage from "./components/HomePage"
 import AddDestinationStory from "./components/AddDestinationStory";
 import { isFriday } from "date-fns";
 
@@ -286,7 +287,7 @@ const App = () => {
   
       setUserId(null);
       localStorage.removeItem("userId");
-      navigate("/login");
+      navigate("/home");
     } catch (error) {
       console.error("Logout error:", error);
       alert("An error occurred during logout. Please try again.");
@@ -484,12 +485,15 @@ const App = () => {
       formData.append(`destinations[${index}][endDate]`, destination.endDate);
       formData.append(`destinations[${index}][latitude]`, destination.latitude);
       formData.append(`destinations[${index}][longitude]`, destination.longitude);
-  
+      formData.append(`destinations[${index}][story]`, destination.story || "");
+
       if (destination.photos) {
         destination.photos.forEach((photo) => {
           formData.append(`photos[${index}]`, photo); 
         });
       }
+
+
     });
   
     try {
@@ -523,6 +527,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
           <Route path="/register" element={<RegisterPage onRegister={handleRegister} />} />
+          <Route path="/home" element={<HomePage/> }/>
  
           <Route element={<ProtectedRoute user={userId} />}>
             <Route path="/" element={<WithMapLayout
@@ -603,7 +608,7 @@ const WithMapLayout = ({ handleLogout, markers, handleChangeMarkers, handleBucke
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-white">
       {/* Top Navigation */}
-      <TopNavigation handleLogout={handleLogout} />
+      <TopNavigation handleLogout={handleLogout} profilePicture={profilePicture} />
   
       <div className="flex flex-grow flex-col lg:flex-row">
         {/* Sidebar */}
@@ -666,7 +671,7 @@ const ProtectedRoute = ({ userId }) => {
     return <div>Loading...</div>;
   }
 
-  return authenticated ? <Outlet /> : <Navigate to="/login" />;
+  return authenticated ? <Outlet /> : <Navigate to="/home" />;
 };
 
 export default App;

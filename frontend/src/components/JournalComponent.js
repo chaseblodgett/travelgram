@@ -140,7 +140,7 @@ const JournalComponent = ({destination, isFriendJournal, profilePicture, profile
       ) : (
         <p className="whitespace-pre-wrap text-gray-200 text-sm">
           {journalEntry || (
-            <span className="text-gray-500 italic">No journal entry yet.</span>
+            <span className="text-gray-500 italic">No story shared yet.</span>
           )}
         </p>
       )}
