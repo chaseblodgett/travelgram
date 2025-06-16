@@ -122,7 +122,7 @@ const Messages = ({ userId, setAllFriendMarkers }) => {
   }
 
   return (
-    <div className="p-4 bg-gray-900 text-white overflow-y-auto min-h-screen">
+    <div className="p-4 bg-gray-900 text-white overflow-y-auto min-h-screen font-sans">
       <div className="flex items-center mb-3">
         {/* Back button */}
         <button

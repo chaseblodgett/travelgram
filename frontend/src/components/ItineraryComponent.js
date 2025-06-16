@@ -69,7 +69,7 @@ const ItineraryComponent = ({ bucketListId }) => {
   };
 
   return (
-    <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-xl w-full md:w-9/10 lg:w-7/8 mx-auto mt-10 ">
+    <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-xl w-full md:w-9/10 lg:w-7/8 mx-auto mt-10 font-sans">
       <div className="bg-gray-800 rounded-xl p-4 text-xs space-y-1 mb-6">
         {itineraryList.map((item, index) => (
           <div key={index} className="text-left">

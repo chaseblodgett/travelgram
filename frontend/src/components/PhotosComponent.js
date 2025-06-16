@@ -50,7 +50,7 @@ const PhotosComponent = ({ photos }) => {
 
   return (
     
-      <div className="flex flex-col items-center w-full max-w-full text-center mx-auto">
+      <div className="flex flex-col items-center w-full max-w-full text-center mx-auto font-sans">
         {/* Image & Side Buttons Container */}
         <div
           className={`relative bg-gray-900 flex items-center justify-center rounded-lg ${

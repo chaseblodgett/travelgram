@@ -54,15 +54,15 @@ const AddTrip = ({ onSave, addNewMarker, clearMarkers }) => {
   };
 
   useEffect(() => {
-    // Only clear markers if it hasn't been done before
+
     if (!hasClearedMarkers) {
-      clearMarkers(); // This will run once when the component mounts
-      setHasClearedMarkers(true); // Mark that markers have been cleared
+      clearMarkers(); 
+      setHasClearedMarkers(true);
     }
-  }, [clearMarkers, hasClearedMarkers]); // Dependency on hasClearedMarkers
+  }, [clearMarkers, hasClearedMarkers]); 
 
   return (
-    <div className="p-4 bg-gray-900 text-white rounded-lg shadow-md max-w-3xl mx-auto text-sm">
+    <div className="p-4 bg-gray-900 text-white rounded-lg shadow-md max-w-3xl mx-auto text-sm font-sans">
       <h2 className="text-xl font-semibold text-purple-400 mb-4">Add a New Trip</h2>
       <form className="space-y-4">
         {/* Trip Name */}

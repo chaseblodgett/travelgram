@@ -111,7 +111,7 @@ const BucketListComponent = ( {isLoaded, handleChange}) => {
   if (!isLoaded) return <div>Loading Google Maps...</div>;
 
   return (
-    <div className="container mx-auto p-3 bg-gray-900 min-h-screen text-white">
+    <div className="container mx-auto p-3 bg-gray-900 min-h-screen text-white font-sans">
       <h2 className="text-2xl font-semibold text-left mb-3 px-2 text-purple-400">My Bucket List</h2>
   
       {/* Autocomplete and Button */}

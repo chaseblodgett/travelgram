@@ -18,9 +18,9 @@ const Friends = ({ allFriends, friendRequests, onAcceptRequest, onDeclineRequest
   };
 
   return (
-    <div className="p-4 bg-gray-900 text-white min-h-screen">
+    <div className="p-4 bg-gray-900 text-white min-h-screen font-sans">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold text-purple-400">My Friends</h1>
+        <h1 className="text-2xl font-semibold text-purple-400">My Friends</h1>
         <Link
           to="/addFriends"
           className="flex items-center bg-transparent p-1.5 rounded-full cursor-pointer opacity-80 hover:opacity-100 hover:animate-bounce-once-grow hover:scale-110 transition transform"

@@ -19,7 +19,7 @@ const Sidebar = ({ onCloseInfoWindow }) => {
 
 
     return (
-      <div className="bg-gray-900 text-gray-500 w-full lg:w-auto p-6 ">
+      <div className="bg-gray-900 text-gray-500 w-full lg:w-auto p-6 font-sans">
         <div className="flex space-x-8 text-gray-500">
           <Link to="/trips" onClick={handleNavigation} className={linkClasses("/trips")}>
             Trips

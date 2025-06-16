@@ -9,15 +9,15 @@ const TopNavigation = ({ handleLogout, profilePicture }) => {
   };
 
   return (
-    <nav className="bg-gray-900 text-white shadow-md">
-        <div className="flex justify-between items-center py-4 mx-auto px-6">
+    <nav className="bg-gray-900 text-white shadow-md font-sans">
+        <div className="flex justify-between items-center py-4 mx-auto px-6 font-sans">
           
           {/* Left: Logo */}
           <Link
             to="/home"
             className="flex items-center px-4 space-x-1 text-2xl font-bold tracking-wide text-purple-400 hover:text-purple-300 transition duration-200"
           >
-            <img src="/travel_logo.svg" alt="Travel Logo" className="h-8 w-8" />
+            <img src="/travel_logo.svg" alt="Travel Logo" className="h-10 w-10" />
             <span>Travelgram</span>
           </Link>
     

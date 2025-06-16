@@ -1,13 +1,48 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
+import FeatureShowcase from "./FeatureShowcase";
 
 const features = [
-  "Share your travel stories",
-  "See where your friends are going",
-  "Upload photos from your trip",
-  "Start planning your trip",
-  "Check your bucket list off",
-];
+    {
+      video: "/create_trip_new.mp4",
+      caption: {
+        title: "Create and Customize Trips",
+        description:"Easily plan new journeys by adding destinations, dates, notes, and photos to craft the perfect travel itinerary.",
+      },
+    },
+    {
+        video: "/add_caption.mp4",
+        caption: {
+          title: "Capture the Moments",
+          description: "Bring your destinations to life by adding stories and uploading photos. Share the memories that made your journey unforgettable.",
+        },
+      },
+    
+      {
+        video: "/browse_friends.mp4",
+        caption: {
+          title: "Explore Your Travel Circle",
+          description: "Scroll through your friends' latest adventures, stories, and snapshots — all in one place. Get inspired by where they’ve been and what they’ve seen.",
+        },
+      },
+      {
+        video: "/browse_posts.mp4",
+        caption: {
+          title: "See Your Journey on the Map",
+          description: "Watch your travels come to life with a dynamic, interactive map. Trace your routes, revisit past destinations, and get a visual overview of everywhere you've explored.",
+        },
+      },
+      
+      {
+        video: "/add_itinerary.mp4",
+        caption: {
+          title: "Save It for Later",
+          description: "Add destinations and experiences to your personal bucket list with just one tap. Keep track of dream locations and plan future adventures with ease.",
+        },
+      }
+      
+  ];
 
 export default function HomePage() {
   const cardsRef = useRef([]);
@@ -31,13 +66,19 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
+  const { ref, inView, entry } = useInView({
+    threshold: 0.5,
+    triggerOnce: true,
+  });
+
+  
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-[#1e1e2f] via-[#0f0f1a] to-black text-white font-inter">
       {/* Navbar */}
       <nav className="flex justify-between items-center px-6 py-4 fixed top-0 left-0 right-0 z-50 bg-gray-900 bg-opacity-90 shadow-md">
         <div className="flex items-center space-x-2 text-purple-400 text-xl font-bold">
-          <img src="/travel_logo.svg" alt="Logo" className="h-8 w-8" />
-          <span>travelgram</span>
+          <img src="/travel_logo.svg" alt="Logo" className="h-10 w-10" />
+          <span>Travelgram</span>
         </div>
         <div className="space-x-4">
           <Link
@@ -66,17 +107,21 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="flex flex-col items-center space-y-8 px-6 pb-20">
-        {features.map((text, idx) => (
+      <section className="flex flex-col items-center gap-10 px-6 pb-20">
+      {features.map((feature, idx) => (
           <div
             key={idx}
-            ref={(el) => (cardsRef.current[idx] = el)}
-            className="w-full max-w-3xl bg-gray-800 border border-gray-700 text-purple-300 p-6 rounded-xl opacity-0 translate-y-10 transition-all duration-700 ease-out"
+            ref={ref}
+            className="opacity-0 translate-y-10 transition-opacity transition-transform duration-700 ease-out w-full max-w-5xl mx-auto"
           >
-            <h2 className="text-xl md:text-2xl font-semibold">{text}</h2>
+            {inView && (<FeatureShowcase
+              videoSrc={feature.video}
+              caption={feature.caption}
+              side={idx % 2 === 0}
+            />)}
           </div>
         ))}
-      </section>
+        </section>
     </div>
   );
 }

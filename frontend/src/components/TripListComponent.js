@@ -78,7 +78,7 @@ const TripListComponent = ({ handleNewTrip, handleRemoveTrip, onCloseInfoWindow,
   };
 
   return (
-    <div className="p-4 bg-gray-900 min-h-screen text-white">
+    <div className="p-4 bg-gray-900 min-h-screen text-white font-sans">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold text-purple-400">My Trips</h2>
         <button

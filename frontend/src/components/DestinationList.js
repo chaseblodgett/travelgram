@@ -82,7 +82,7 @@ const DestinationList = ({
   };
 
   return (
-    <div>
+    <div className="font-sans">
       <Autocomplete
         onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
         onPlaceChanged={handlePlaceSelect}
@@ -94,30 +94,30 @@ const DestinationList = ({
             setNewDestination({ ...newDestination, name: e.target.value })
           }
           placeholder="Search for a destination"
-          className="w-full bg-gray-800 text-white border border-gray-600 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-purple-500 placeholder-gray-400"
+          className="w-full bg-gray-800 text-white border border-gray-600 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-purple-500 placeholder-gray-400 font-sans"
         />
       </Autocomplete>
 
       <button
         type="button"
         onClick={handleAddDestination}
-        className="bg-purple-600 text-white px-3 py-1 rounded-md shadow hover:bg-purple-500 transition duration-200 mt-2"
+        className="bg-purple-600 text-white px-3 py-1 rounded-md shadow hover:bg-purple-500 transition duration-200 mt-2 font-sans"
       >
         Add Destination
       </button>
 
       {error && <p className="text-red-400 mt-2">{error}</p>}
 
-      <ul className="space-y-3 mt-4">
+      <ul className="space-y-3 mt-4 font-sans">
         {destinations.map((destination, index) => (
           <li key={index} className="bg-gray-800 p-4 rounded-md shadow border border-gray-700">
             <div className="flex justify-between items-center">
               <div>
                 <strong className="text-white">{destination.name}</strong>
                 <br />
-                <span className="text-gray-400">
+                {/* <span className="text-gray-400">
                   {formatDate(destination.startDate)} – {formatDate(destination.endDate)}
-                </span>
+                </span> */}
               </div>
               <div className="flex items-center space-x-2 ml-auto">
                 <input

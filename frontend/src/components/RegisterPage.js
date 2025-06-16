@@ -43,7 +43,7 @@ const RegisterPage = ({ onRegister }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-950 to-black px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-950 to-black px-4 font-sans">
       <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-2xl shadow-xl p-8 animate-fade-in-up">
         <h2 className="text-3xl font-bold text-purple-400 text-center mb-8">
           Create Account

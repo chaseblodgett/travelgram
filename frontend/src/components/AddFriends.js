@@ -69,7 +69,7 @@ const AddFriends = () => {
   };
 
   return (
-    <div className="p-4 bg-gray-900 text-white min-h-screen">
+    <div className="p-4 bg-gray-900 text-white min-h-screen font-sans">
       <h1 className="text-xl font-semibold mb-3 text-purple-400">Add Friends</h1>
   
       <div className="mb-4 flex items-center gap-2">

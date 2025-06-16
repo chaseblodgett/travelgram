@@ -1,10 +1,16 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}", 
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Space Grotesk', ...defaultTheme.fontFamily.sans],
+        inter: ['Inter', ...defaultTheme.fontFamily.sans],
+      },
       keyframes: {
         squeezeSlideOutRight: {
           '0%': { transform: 'scaleX(1) translateX(0)', opacity: '1' },
@@ -30,7 +36,7 @@ module.exports = {
         "fade-in-grow": "fadeInGrow 0.5s ease-out",
         'squeeze-slide-out-right': 'squeezeSlideOutRight 0.5s ease forwards',
         'bounce-once-grow': 'bounceOnceGrow 0.4s ease-in-out',
-         'shake': 'shake 0.5s ease-in-out',
+        'shake': 'shake 0.5s ease-in-out',
       },
     },
   },

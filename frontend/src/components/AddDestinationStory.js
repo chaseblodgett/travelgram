@@ -10,7 +10,7 @@ const AddDestinationStory = ({ destination, onSaveStory, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center font-sans">
       <div className="bg-white p-6 rounded-md shadow-lg w-96">
         <h2 className="text-lg font-semibold">Add a Story for {destination.name}</h2>
         <textarea

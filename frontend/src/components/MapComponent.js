@@ -175,7 +175,7 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
           className="bg-gray-900 border border-purple-500 pt-0 mt-0"
         >
           
-          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden">
+          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden font-sans">
               <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-gray-900 border border-purple-500">
                 
               <div className="flex items-start w-full relative">
@@ -214,7 +214,7 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
           onCloseClick={handleInfoWindowClose}
         >
           {/* Outer Container to constrain width and prevent overflow */}
-          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden">
+          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden font-sans">
             <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-gray-900 border border-purple-700">
               
             <div className="flex items-start w-full relative">
@@ -252,7 +252,7 @@ const MapComponent = ({ markers, selectedMarkerZoomState, onCloseInfoWindow, onM
           onCloseClick={handleInfoWindowClose}
         >
           {/* Outer Container to constrain width and prevent overflow */}
-          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden">
+          <div className="w-[95vw] sm:w-[450px] max-w-[500px] overflow-hidden font-sans">
             <div className="p-4 flex flex-col gap-4 text-center rounded-lg shadow-lg bg-gray-900 border border-purple-700">
               
             <div className="flex items-start w-full relative">
