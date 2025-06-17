@@ -6,6 +6,7 @@ const AddFriends = () => {
   const [currUserId, setCurrUserId] = useState(null);
   const [currFriends, setCurrFriends] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [addedFriends, setAddedFriends] = useState([]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -61,7 +62,8 @@ const AddFriends = () => {
       if (!response.ok) {
         throw new Error("Failed to add friend");
       }
-      alert("Friend added successfully!");
+  
+      setAddedFriends((prev) => [...prev, userId]);
       setResults(results.filter((user) => user.id !== userId)); 
     } catch (error) {
       console.error("Error adding friend:", error);
@@ -106,12 +108,21 @@ const AddFriends = () => {
                 <span className="text-sm font-medium">{user.name}</span>
               </div>
   
-              <button
-                onClick={() => handleAddFriend(user._id)}
-                className="bg-green-600 text-sm text-white px-3 py-1.5 rounded-md hover:bg-green-500 transition"
-              >
-                Add
-              </button>
+              {addedFriends.includes(user._id) ? (
+                <img
+                  src="/checkbox_green.svg"
+                  alt="Added"
+                  className="w-6 h-6"
+                />
+              ) : (
+                <button
+                  onClick={() => handleAddFriend(user._id)}
+                  className="bg-green-600 text-sm text-white px-3 py-1.5 rounded-md hover:bg-green-500 transition"
+                >
+                  Add
+                </button>
+              )}
+
             </li>
           ))}
         </ul>

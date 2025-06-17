@@ -150,32 +150,35 @@ const Messages = ({ userId, setAllFriendMarkers }) => {
           </div>
         )}
 
-        {loading ? (
-          <p className="text-gray-400">Loading messages...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
-          messages
-            .slice(-visibleCount)
-            .map((message, index) => (
-              <div
-                key={index}
-                className={`mb-2 ${
-                  message.sender._id === userId ? "text-right" : "text-left"
-                }`}
-              >
-                <span
-                  className={`inline-block px-3 py-1.5 rounded-md text-sm ${
-                    message.sender._id === userId
-                      ? "bg-purple-600 text-white"
-                      : "bg-gray-600 text-gray-200"
-                  }`}
+        <div className="flex flex-col gap-2 w-full px-4">
+          {loading ? (
+            <p className="text-gray-400">Loading messages...</p>
+          ) : error ? (
+            <p className="text-red-500">{error}</p>
+          ) : (
+            messages.slice(-visibleCount).map((message, index) => {
+              const isOwnMessage = message.sender._id === userId;
+              return (
+                <div
+                  key={index}
+                  className={`flex w-full ${isOwnMessage ? "justify-end" : "justify-start"}`}
                 >
-                  {message.content}
-                </span>
-              </div>
-            ))
-        )}
+                  <div
+                    className={`px-4 py-2 rounded-lg text-sm max-w-[70%] break-words ${
+                      isOwnMessage
+                        ? "bg-purple-600 text-white rounded-br-none"
+                        : "bg-gray-700 text-gray-100 rounded-bl-none"
+                    }`}
+                  >
+                    {message.content}
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+
         <div ref={messagesEndRef}/>
       </div>
 

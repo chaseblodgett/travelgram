@@ -171,14 +171,14 @@ const App = () => {
       }
     }
 
-    if (savedUserId) {
+    if (savedUserId && location.pathname !== "/home") {
       fetchTrips();
       fetchBucketList();
       fetchFriends();
       fetchFriendRequests();
       fetchUserDetails();
     }
-  }, [location.pathname]);
+  }, [location.pathname, userId]);
 
   const handleLogin = async (userId) => {
     setUserId(userId);
