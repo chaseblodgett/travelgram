@@ -54,6 +54,7 @@ const features = [
 export default function HomePage() {
   const cardsRef = useRef([]);
   const [visibleSections, setVisibleSections] = useState([]);
+  const [scrolled, setScrolled] = useState(false);
 
   const { ref, inView } = useInView({
     threshold: 0.2,
@@ -75,14 +76,29 @@ export default function HomePage() {
       if (card) observer.observe(card);
     });
 
-    return () => observer.disconnect();
+    const handleScroll = () => {
+        setScrolled(window.scrollY > 8);
+      };
+    
+      window.addEventListener("scroll", handleScroll);
+    
+      return () => {
+        observer.disconnect();
+        window.removeEventListener("scroll", handleScroll);
+      };
+
+
   }, []);
 
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1a0e2a] via-[#120d26] to-[#000000] text-white font-inter ">
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-6 py-4 fixed top-0 left-0 right-0 z-50 bg-opacity-90 font-sans">
+      <nav
+        className={`flex justify-between items-center px-6 py-4 fixed top-0 left-0 right-0 z-50 transition-all duration-300 
+            ${scrolled ? "bg-[#120d26]/95 shadow-lg backdrop-blur" : "bg-transparent"}`}
+        >
+
         <div className="flex items-center space-x-2 text-purple-400 text-xl font-bold font-sans">
           <img src="/travel_logo.svg" alt="Logo" className="h-10 w-10" />
           <span>Travelgram</span>
