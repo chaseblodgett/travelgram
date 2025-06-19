@@ -6,8 +6,8 @@
   "homepage": "/",
   "scripts": {
     "start": "node backend/server.js",
-    "dev": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\"",
-    "heroku-postbuild": "npm install && npm install --prefix frontend && npm install --prefix backend && npm run build --prefix frontend"
+    "heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend",
+    "dev": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\""
   },
   "author": "Chase Blodgett",
   "license": "ISC",
