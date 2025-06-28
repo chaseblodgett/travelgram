@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,15 +19,15 @@ const LoginPage = ({ onLogin }) => {
 
       const data = await response.json();
       if (!response.ok) {
+        setError(true);
         throw new Error(data.message || "Login failed");
       }
 
-      setError(null);
+      setError(false);
       onLogin(data.user.id);
-      console.log(data.user.id);
       console.log("Login Successful");
     } catch (err) {
-      setError(err.message);
+      setError(true);
     }
   };
 
@@ -79,8 +79,8 @@ const LoginPage = ({ onLogin }) => {
         </form>
 
         {/* Error Placeholder */}
-        {/* <p className="text-red-500 text-center mt-4">Invalid login details.</p> */}
-
+        {error && (<p className="text-red-500 text-center mt-4">Invalid login details.</p>)}
+        
         {/* Register Link */}
         <p className="mt-6 text-sm text-gray-400 text-center">
           Don&apos;t have an account?{" "}
