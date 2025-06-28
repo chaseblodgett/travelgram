@@ -27,6 +27,6 @@
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Live App
 
 🔗 [Travelgram Live](https://travelgram-app-0bcf3d977e1b.herokuapp.com/home/)
