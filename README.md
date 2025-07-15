@@ -1,6 +1,6 @@
 # 🌍 Travelgram
 
-### 🔗 [Travelgram Live]([http://travelgram.us-east-1.elasticbeanstalk.com/home])
+### 🔗 [Travelgram Live](http://travelgram.us-east-1.elasticbeanstalk.com/home)
 
 **Travelgram** is a full-stack social media web application where users can share travel experiences, connect with others, and plan future adventures together.
 
