@@ -1,6 +1,6 @@
 # 🌍 Travelgram
 
-### 🔗 [Travelgram Live](https://travelgram-app-0bcf3d977e1b.herokuapp.com/home/)
+### 🔗 [Travelgram Live]([https://travelgram-app-0bcf3d977e1b.herokuapp.com/home/](http://travelgram.us-east-1.elasticbeanstalk.com/home))
 
 **Travelgram** is a full-stack social media web application where users can share travel experiences, connect with others, and plan future adventures together.
 
